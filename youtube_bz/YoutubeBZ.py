@@ -24,12 +24,8 @@ class YoutubeBZ:
         i = 1
         print('{:3s} {:50s} {:2s}'.format('', 'Title', 'Track Count'))
         for release in data['releases']:
-            if (release['title'] in releases) and (release['track-count'] == releases[release['title']]):
-                pass
-            else:
-                releases[release['title']] = release['track-count']
-                print('{:2d}) {:50s} {:2d}'.format(i, release['title'], int(release['track-count'])))
-                i = i+1
+            print('{:2d}) {:50s} {:2d}'.format(i, release['title'], int(release['track-count'])))
+            i = i+1
         i = int(input('Select one: ')) -1
 
         return data['releases'][i]['id']
@@ -60,7 +56,7 @@ class YoutubeBZ:
                 ratio = SequenceMatcher(None, track.upper(), video_title.upper()).ratio() 
                 if ratio > 0.9:
                     print('{} [\033[32mOK\033[0m]'.format(video_title))
-                    f.write("{}\n".format(video_id))
+                    f.write("https://www.youtube.com/watch?v={}\n".format(video_id))
                     counts = counts + 1
                 else:
                     print('{} [\033[33mFailed\033[0m]'.format(track))
