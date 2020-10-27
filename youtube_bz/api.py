@@ -40,8 +40,14 @@ class YoutubeAPI:
 
         fake_response = {'items':[]}
 
-        r = requests.get(url, params=payload)
-        data = re.search(r'(var\ ytInitialData\ =\ )(.*);', r.text).group(2)
+        while True:
+            try:
+                r = requests.get(url, params=payload)
+                data = re.search(r'(var\ ytInitialData\ =\ )(.*);', r.text).group(2)
+                break
+            except AttributeError:
+                pass
+
         data = json.loads(data)
         for videoRenderer in gen_dict_extract('videoRenderer', data):
             if 'videoId' in videoRenderer:

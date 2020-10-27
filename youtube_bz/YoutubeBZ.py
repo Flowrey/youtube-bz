@@ -47,6 +47,7 @@ class YoutubeBZ:
                     print(response['error']['message'])
                     return 0
 
+                i = 0
                 for item in response['items']:
                     video_title = html.unescape(item['snippet']['title'])
                     video_id = item['id']['videoId']
@@ -54,13 +55,19 @@ class YoutubeBZ:
                     video_title = re.sub(r'\([^\)]+\)', '', video_title)
                     track = re.sub(r'\([^\)]+\)', '', track)
 
+                    regex_artist = re.search(r'(.*)\ -\ (.*)', video_title)
+                    if regex_artist != None:
+                        video_title = regex_artist.group(2)
+
                     ratio = SequenceMatcher(None, track.upper(), video_title.upper()).ratio() 
-                    if ratio > 0.9:
+                    if ratio > 0.8:
                         print('{} [\033[32mOK\033[0m]'.format(video_title))
                         f.write("https://www.youtube.com/watch?v={}\n".format(video_id))
                         counts = counts + 1
                         break
                     else:
-                        print('{} [\033[33mRetry\033[0m]'.format(track))
+                        if i == len(response['items']):
+                            print('{} [\033[33mFail\033[0m]'.format(track))
+                    i = i + 1
 
         return counts
