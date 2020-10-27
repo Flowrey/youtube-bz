@@ -1,0 +1,7 @@
+#!/usr/bin/env python3
+
+import youtube_bz
+
+if __name__ == '__main__':
+    youtube_bz.main()
+
