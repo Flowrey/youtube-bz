@@ -1,8 +1,10 @@
 import requests
+import json
+import re
 
-class YoutubeAPI:
+class F_ckYoutubeAPI:
 
-    __api_key = 'MY_API_KEY'
+    __api_key = 'nop'
 
     def search(self, q: str, maxResults: int = 1) -> str:
         url = 'https://www.googleapis.com/youtube/v3/search'
@@ -11,11 +13,46 @@ class YoutubeAPI:
             'maxResults': maxResults,
             'q': q,
             'key': self.__api_key,
-            'type': 'video',
+            'fields': 'items/id/videoId, items/snippet/title'
         }
 
         r = requests.get(url, params=payload)
         return r.json()
+
+class YoutubeAPI:
+
+    def search(self, q: str) -> str:
+        url = 'https://www.youtube.com/results'
+        payload = {'search_query': q}
+
+        fake_response = {
+                            'items':
+                            [
+                                {
+                                    'snippet':
+                                    {
+                                        'title':'Fake Title'
+                                    },
+                                    'id':
+                                    {
+                                        'videoId':'Fake ID'
+                                    }
+                                }
+                            ]
+                        }
+
+        r = requests.get(url, params=payload)
+        data = re.search(r'(var\ ytInitialData\ =\ )(.*);', r.text).group(2)
+        data = json.loads(data)
+        contents = data['contents']['twoColumnSearchResultsRenderer']['primaryContents']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents']
+
+        for content in contents:
+            if 'videoRenderer' in content:
+                fake_response['items'][0]['snippet']['title'] = content['videoRenderer']['title']['runs'][0]['text']
+                fake_response['items'][0]['id']['videoId'] = content['videoRenderer']['videoId']
+                break
+
+        return fake_response
 
 class MusicBrainzAPI:
 
