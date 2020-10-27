@@ -8,6 +8,31 @@ from .album import Album
 from difflib import SequenceMatcher
 
 class YoutubeBZ:
+
+    def search_albums(self):
+        data = MusicBrainzAPI().search('artist', input('Artist: '), 3)
+        i = 1
+        for artist in data['artists']:
+            print('{:1d}) {}'.format(i, artist['name']))
+            i = i+1
+        
+        i = int(input('Select one: ')) - 1
+        answer = input('Album: ')
+        data = MusicBrainzAPI().search('release', '{} AND arid:{}'.format(answer, data['artists'][i]['id']), 25)
+
+        releases = {}
+        i = 1
+        print('{:3s} {:50s} {:2s}'.format('', 'Title', 'Track Count'))
+        for release in data['releases']:
+            if (release['title'] in releases) and (release['track-count'] == releases[release['title']]):
+                pass
+            else:
+                releases[release['title']] = release['track-count']
+                print('{:2d}) {:50s} {:2d}'.format(i, release['title'], int(release['track-count'])))
+                i = i+1
+        i = int(input('Select one: ')) -1
+
+        return data['releases'][i]['id']
     
     def find_ids(self, mbid: str)-> int:
 

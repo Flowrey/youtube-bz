@@ -67,7 +67,7 @@ class MusicBrainzAPI:
         return r.json()
 
     def search(self, entity_type: str, query: str, limit: int) -> str:
-        url = 'https://musicbrainz.org/ws/2/{}/{}'.format(entity_type, mbid)
+        url = 'https://musicbrainz.org/ws/2/{}'.format(entity_type)
         payload = {
             'fmt':'json',
             'limit':limit,

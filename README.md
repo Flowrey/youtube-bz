@@ -11,4 +11,8 @@ Launch the software with the MBID of your album (see https://musicbrainz.org/doc
 $ pip install -e .
 $ ./bin/youtube_bz [MBID]
 ```
+or you can launch the software without argument in order to search an album
+```
+$ ./bin/youtube_bz
+```
 
