@@ -32,14 +32,14 @@ class YoutubeBZ:
                 video_title = re.sub(r'\([^\)]+\)', '', video_title)
                 track = re.sub(r'\([^\)]+\)', '', track)
 
-                print(track)
-
                 ratio = SequenceMatcher(None, track.upper(), video_title.upper()).ratio() 
                 if ratio > 0.9:
-                    print(video_title)
+                    print('{} [\033[32mOK\033[0m]'.format(video_title))
                     f.write("{}\n".format(video_id))
-                    print()
                     counts = counts + 1
-                time.sleep(0.5)
+                else:
+                    print('{} [\033[33mFailed\033[0m]'.format(track))
+
+                time.sleep(0.75)
 
         return counts
