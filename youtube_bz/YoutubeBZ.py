@@ -66,8 +66,11 @@ class YoutubeBZ:
                         counts = counts + 1
                         break
                     else:
+                        i = i + 1
                         if i == len(response['items']):
                             print('{} [\033[33mFail\033[0m]'.format(track))
-                    i = i + 1
+                
+                if len(response['items']) == 0:
+                    print('{} [\033[33mFail\033[0m]'.format(track))
 
         return counts
