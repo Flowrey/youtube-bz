@@ -2,6 +2,19 @@ import requests
 import json
 import re
 
+def gen_dict_extract(key, var):
+    if hasattr(var,'items'):
+        for k, v in var.items():
+            if k == key:
+                yield v
+            if isinstance(v, dict):
+                for result in gen_dict_extract(key, v):
+                    yield result
+            elif isinstance(v, list):
+                for d in v:
+                    for result in gen_dict_extract(key, d):
+                        yield result
+
 class F_ckYoutubeAPI:
 
     __api_key = 'nop'
@@ -25,32 +38,15 @@ class YoutubeAPI:
         url = 'https://www.youtube.com/results'
         payload = {'search_query': q}
 
-        fake_response = {
-                            'items':
-                            [
-                                {
-                                    'snippet':
-                                    {
-                                        'title':'Fake Title'
-                                    },
-                                    'id':
-                                    {
-                                        'videoId':'Fake ID'
-                                    }
-                                }
-                            ]
-                        }
+        fake_response = {'items':[]}
 
         r = requests.get(url, params=payload)
         data = re.search(r'(var\ ytInitialData\ =\ )(.*);', r.text).group(2)
         data = json.loads(data)
-        contents = data['contents']['twoColumnSearchResultsRenderer']['primaryContents']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents']
-
-        for content in contents:
-            if 'videoRenderer' in content:
-                fake_response['items'][0]['snippet']['title'] = content['videoRenderer']['title']['runs'][0]['text']
-                fake_response['items'][0]['id']['videoId'] = content['videoRenderer']['videoId']
-                break
+        for videoRenderer in gen_dict_extract('videoRenderer', data):
+            if 'videoId' in videoRenderer:
+                fake_response['items'].append({'snippet':{'title':videoRenderer['title']['runs'][0]['text']},
+                                        'id':{'videoId':videoRenderer['videoId']}})
 
         return fake_response
 

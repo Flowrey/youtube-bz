@@ -47,20 +47,20 @@ class YoutubeBZ:
                     print(response['error']['message'])
                     return 0
 
-                video_title = html.unescape(response['items'][0]['snippet']['title'])
-                video_id = response['items'][0]['id']['videoId']
-                
-                video_title = re.sub(r'\([^\)]+\)', '', video_title)
-                track = re.sub(r'\([^\)]+\)', '', track)
+                for item in response['items']:
+                    video_title = html.unescape(item['snippet']['title'])
+                    video_id = item['id']['videoId']
+                    
+                    video_title = re.sub(r'\([^\)]+\)', '', video_title)
+                    track = re.sub(r'\([^\)]+\)', '', track)
 
-                ratio = SequenceMatcher(None, track.upper(), video_title.upper()).ratio() 
-                if ratio > 0.9:
-                    print('{} [\033[32mOK\033[0m]'.format(video_title))
-                    f.write("https://www.youtube.com/watch?v={}\n".format(video_id))
-                    counts = counts + 1
-                else:
-                    print('{} [\033[33mFailed\033[0m]'.format(track))
-
-                time.sleep(0.75)
+                    ratio = SequenceMatcher(None, track.upper(), video_title.upper()).ratio() 
+                    if ratio > 0.9:
+                        print('{} [\033[32mOK\033[0m]'.format(video_title))
+                        f.write("https://www.youtube.com/watch?v={}\n".format(video_id))
+                        counts = counts + 1
+                        break
+                    else:
+                        print('{} [\033[33mRetry\033[0m]'.format(track))
 
         return counts
