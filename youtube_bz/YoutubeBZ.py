@@ -2,8 +2,10 @@ from __future__ import unicode_literals
 
 import html
 import time
-import youtube_dl
+import os
 import re
+
+from youtube_dl import YoutubeDL
 
 from .api import YoutubeAPI, MusicBrainzAPI
 from .album import Album
@@ -33,12 +35,13 @@ class YoutubeBZ:
         i = int(input('Select one: '))
 
         return releases[i]['id']
-    
-    def find_ids(self, mbid: str)-> int:
+
+
+    def find_ids(self, mbid: str, download: bool = False)-> int:
 
         counts = 0
         myAlbum = Album(mbid)
-        
+
         with open("{}.txt".format(myAlbum.title), "w") as f:
             for track in myAlbum.tracks:
                 query = '+"{}" +"{}" +"{}" +"{}"'.format(
@@ -65,6 +68,15 @@ class YoutubeBZ:
 
                     ratio = SequenceMatcher(None, track.upper(), video_title.upper()).ratio() 
                     if ratio > 0.8:
+                        if download == True:
+                            ydl_opts = {}
+                            # FIXME: Don't know why this won't work from the the youtube-dl libray
+                            # but work with an os.system call
+
+                            # with YoutubeDL(ydl_opts) as ydl:
+                                # ydl.download(["http://www.youtube.com/watch?v={}".format(video_id)])
+                            pass
+
                         print('{} [\033[32mOK\033[0m]'.format(video_title))
                         f.write("https://www.youtube.com/watch?v={}\n".format(video_id))
                         counts = counts + 1
@@ -76,5 +88,10 @@ class YoutubeBZ:
                 
                 if len(response['items']) == 0:
                     print('{} [\033[33mFail\033[0m]'.format(track))
+                
+        if download == True:
+            # HACK: Only way to download song actualy is with a system call
+            os.system('youtube-dl -a "{}.txt"'.format(myAlbum.title))
+            os.remove('{}.txt'.format(myAlbum.title))
 
         return counts

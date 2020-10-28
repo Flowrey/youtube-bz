@@ -27,4 +27,4 @@ def main():
             sys.exit('{} not a valid MBID'.format(args.mbid))
         mbid = args.mbid
 
-    YoutubeBZ().find_ids(mbid)
+    YoutubeBZ().find_ids(mbid, args.download)

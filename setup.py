@@ -18,5 +18,5 @@ setuptools.setup(
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     ],
     python_requires='>=3.6',
-    install_requires=['requests'],
+    install_requires=['requests', 'youtube_dl'],
 )
