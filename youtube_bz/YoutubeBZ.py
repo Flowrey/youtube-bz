@@ -1,5 +1,8 @@
+from __future__ import unicode_literals
+
 import html
 import time
+import youtube_dl
 import re
 
 from .api import YoutubeAPI, MusicBrainzAPI
@@ -9,26 +12,27 @@ from difflib import SequenceMatcher
 
 class YoutubeBZ:
 
-    def search_albums(self):
-        data = MusicBrainzAPI().search('artist', input('Artist: '), 3)
-        i = 1
-        for artist in data['artists']:
-            print('{:1d}) {}'.format(i, artist['name']))
-            i = i+1
-        
-        i = int(input('Select one: ')) - 1
-        answer = input('Album: ')
-        data = MusicBrainzAPI().search('release', '{} AND arid:{}'.format(answer, data['artists'][i]['id']), 25)
+    def search_albums(self, artist, album):
+        data = MusicBrainzAPI().search('artist', artist, 1)
+        print('{:17s} {}'.format('', data['artists'][0]['name']))
+        data = MusicBrainzAPI().search('release', '{} AND arid:{}'.format(album, data['artists'][0]['id']), 25)
 
-        releases = {}
-        i = 1
+        releases = []
+        for item in data['releases']:
+            if any (d['title'] == item['title'] and d['track-count'] == item['track-count'] for d in releases):
+                pass
+            else:
+                releases.append({'title' : item['title'], 'id' : item['id'], 'track-count' : item['track-count']})
+
         print('{:3s} {:50s} {:2s}'.format('', 'Title', 'Track Count'))
-        for release in data['releases']:
-            print('{:2d}) {:50s} {:2d}'.format(i, release['title'], int(release['track-count'])))
-            i = i+1
-        i = int(input('Select one: ')) -1
+        i = 0
+        for track in releases:
+            print('{:2d}) {:50s} {:2d}'.format(i, track['title'], int(track['track-count'])))
+            i = i + 1
 
-        return data['releases'][i]['id']
+        i = int(input('Select one: '))
+
+        return releases[i]['id']
     
     def find_ids(self, mbid: str)-> int:
 
