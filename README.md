@@ -9,10 +9,10 @@ This software use the Google API as well as MusicBrainZ API.
 Launch the software with the MBID of your album (see https://musicbrainz.org/doc/MusicBrainz_Identifier)
 ```
 $ pip install -e .
-$ ./bin/youtube_bz [MBID]
+$ ./bin/youtube_bz -m MBID
 ```
-or you can launch the software without argument in order to search an album
+or you can launch the software with the search parameter
 ```
-$ ./bin/youtube_bz
+$ ./bin/youtube_bz -s artist album
 ```
 
