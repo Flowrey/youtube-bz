@@ -24,4 +24,4 @@ class Album:
 
         for media in release['media']:
             for tracks in media['tracks']:
-                self.tracks.append(tracks['title'])
+                self.tracks.append({'title':tracks['title'], 'length':tracks['length']})

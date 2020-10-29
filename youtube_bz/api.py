@@ -51,8 +51,13 @@ class YoutubeAPI:
         data = json.loads(data)
         for videoRenderer in gen_dict_extract('videoRenderer', data):
             if 'videoId' in videoRenderer:
-                fake_response['items'].append({'snippet':{'title':videoRenderer['title']['runs'][0]['text']},
-                                        'id':{'videoId':videoRenderer['videoId']}})
+                for i in videoRenderer['thumbnailOverlays']:
+                    if 'thumbnailOverlayTimeStatusRenderer' in i:
+                        fake_response['items'].append({
+                            'snippet':{'title':videoRenderer['title']['runs'][0]['text']},
+                            'id':{'videoId':videoRenderer['videoId']}, 
+                            'length': i['thumbnailOverlayTimeStatusRenderer']['text']['simpleText']
+                        })
 
         return fake_response
 
