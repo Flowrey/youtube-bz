@@ -19,4 +19,10 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
     install_requires=['requests'],
+    entry_points = {
+        'console_scripts': [
+            'youtube-bz = youtube_bz:main',
+         ],
+    },
+    scripts=['bin/youtube-bz'],
 )
