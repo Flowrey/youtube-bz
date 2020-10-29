@@ -13,10 +13,10 @@ setuptools.setup(
     url="https://github.com/flowrey/ytbz",
     packages=setuptools.find_packages(),
     classifiers=[
-        "Development Status :: 2 - Pre-Alpha"
+        "Development Status :: 2 - Pre-Alpha",
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     ],
     python_requires='>=3.6',
-    install_requires=['requests', 'youtube_dl'],
+    install_requires=['requests'],
 )
