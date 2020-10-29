@@ -15,23 +15,6 @@ def gen_dict_extract(key, var):
                     for result in gen_dict_extract(key, d):
                         yield result
 
-class F_ckYoutubeAPI:
-
-    __api_key = 'nop'
-
-    def search(self, q: str, maxResults: int = 1) -> str:
-        url = 'https://www.googleapis.com/youtube/v3/search'
-        payload = {
-            'part': 'snippet',
-            'maxResults': maxResults,
-            'q': q,
-            'key': self.__api_key,
-            'fields': 'items/id/videoId, items/snippet/title'
-        }
-
-        r = requests.get(url, params=payload)
-        return r.json()
-
 class YoutubeAPI:
 
     def search(self, q: str) -> str:
