@@ -8,7 +8,7 @@
 
 <p align="center">
 <img src="https://img.shields.io/badge/python-3-blue"></a>
-<img src="https://img.shields.io/badge/pypi-0.1.0-brightgreen"></a>
+<img src="https://img.shields.io/badge/pypi-0.1.0-blue"></a>
 <img src="https://img.shields.io/badge/license-GPT-blue.svg"></a>
 </p>
 
