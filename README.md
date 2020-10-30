@@ -1,8 +1,37 @@
-# YouTubeBrainz
+<h1 align="center">
+  YouTubeBrainz
+</h1>
 
-YoutubeBrainz allow you to find Youtube Videos associated to an Album on MusicBrainz.
+<p align="center">
+  YoutubeBrainz allow you to find and download Youtube Videos associated to an Album on MusicBrainz.
+</p>
 
-## Installation
+<p align="center">
+<img src="https://img.shields.io/badge/python-3-blue"></a>
+<img src="https://img.shields.io/badge/pypi-0.1.0-blue"></a>
+<img src="https://img.shields.io/badge/license-GPT-blue.svg"></a>
+</p>
+
+<p align="center"><img src="/img/demo.gif?raw=true"/></p>
+
+## Summary
+
+  - [Getting Started](#getting-started)
+  - [Usage](#usage)
+  - [Author](#author)
+  - [License](#license)
+  - [Acknowledgments](#Acknowledgments)
+  
+## Getting Started
+
+### Prerequistes
+
+This software depends on [youtube-dl](https://youtube-dl.org/) to extract the audio from the video.
+To extract the audio youtube-dl need either [avconv](https://libav.org/) or [ffmpeg](https://www.ffmpeg.org/).
+
+### Installing
+
+You can install youtube-bz directly from pip it should install automaticly all the dependencies
 ```
 $ sudo pip install youtube-bz
 ```
@@ -35,3 +64,17 @@ If you don't want to download the album you can pass the --no-download argument
 ```
 $ youtube-bz --no-download -m MBID
 ```
+
+## Author
+  
+  - **Flowrey** - [Flowrey](https://github.com/Flowrey)
+  
+## License
+
+This project is licensed under the [GPL-3.0](LICENSE.md)
+GNU General Public License v3.0 - see the [LICENSE.md](LICENSE.md) file for
+details
+
+## Acknowledgents
+
+  - This project structure have been greatly inspired by youtube-dl
