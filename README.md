@@ -2,6 +2,8 @@
 
 YoutubeBrainz allow you to find Youtube Videos associated to an Album on MusicBrainz.
 
+<p align="center"><img src="/img/demo.gif?raw=true"/></p>
+
 ## Installation
 ```
 $ sudo pip install youtube-bz
