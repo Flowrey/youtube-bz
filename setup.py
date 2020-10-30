@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="youtube_bz",
-    version="0.0.2",
+    version="0.1.0",
     author="Flowrey",
     description="YoutubeBrainz allow you to find Youtube Videos associated to an Album on MusicBrainZ. ",
     long_description=long_description,
