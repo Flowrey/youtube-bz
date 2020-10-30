@@ -26,8 +26,8 @@
 
 ### Prerequistes
 
-This software relly on youtube-dl to extract the audio from the YouTube video, in order to extract the audio youtube-dl relly himself on
-[avconv](https://libav.org/) or [ffmpeg](https://www.ffmpeg.org/).
+This software depends on [youtube-dl](https://youtube-dl.org/) to extract the audio from the video.
+To extract the audio youtube-dl need either [avconv](https://libav.org/) or [ffmpeg](https://www.ffmpeg.org/).
 
 ### Installing
 
