@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-  YoutubeBrainz allow you to find Youtube Videos associated to an Album on MusicBrainz.
+  YoutubeBrainz allow you to find and download Youtube Videos associated to an Album on MusicBrainz.
 </p>
 
 <p align="center">
@@ -14,7 +14,24 @@
 
 <p align="center"><img src="/img/demo.gif?raw=true"/></p>
 
-## Installation
+## Summary
+
+  - [Getting Started](#getting-started)
+  - [Usage](#usage)
+  - [Author](#author)
+  - [License](#license)
+  - [Acknowledgments](#Acknowledgments)
+  
+## Getting Started
+
+### Prerequistes
+
+This software relly on youtube-dl to extract the audio from the YouTube video, in order to extract the audio youtube-dl relly himself on
+[avconv](https://libav.org/) or [ffmpeg](https://www.ffmpeg.org/).
+
+### Installing
+
+You can install youtube-bz directly from pip it should install automaticly all the dependencies
 ```
 $ sudo pip install youtube-bz
 ```
@@ -47,3 +64,17 @@ If you don't want to download the album you can pass the --no-download argument
 ```
 $ youtube-bz --no-download -m MBID
 ```
+
+## Author
+  
+  - **Flowrey** - [Flowrey](https://github.com/Flowrey)
+  
+## License
+
+This porject is licensed under the [GPL-3.0](LICENSE.md)
+GNU General Public License v3.0 - see the [LICENSE.md](LICENSE.md) file for
+details
+
+## Acknowledgents
+
+  - This project structure have been greatly inspired by youtube-dl
