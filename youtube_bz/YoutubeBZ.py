@@ -6,13 +6,27 @@ import re
 
 from datetime import timedelta
 
+import youtube_dl
+
 from .api import YoutubeAPI, MusicBrainzAPI
 from .album import Album
 from .video import Video
 
 from difflib import SequenceMatcher
 
+class MyLogger(object):
+    def debug(self, msg):
+        pass
+
+    def warning(self, msg):
+        pass
+
+    def error(self, msg):
+        pass
+
 class YoutubeBZ:
+
+    downloaded = False
 
     def search_album(self, artist, album):
         data = MusicBrainzAPI().search('artist', artist, 1)
@@ -63,9 +77,36 @@ class YoutubeBZ:
 
         return abs(video_time.seconds - track_time.seconds)
 
-    def find_album(self, mbid: str, genereated: bool = True):
+    
+    def my_hook(self, d):
+        if d['status'] == 'downloading':
+            if self.downloaded == False:
+                print('Downloading: {}% \r'.format(int((d['downloaded_bytes']*100) / d['total_bytes'])), end="")
+            else:
+                print('Extracting: {}% \r'.format(int((d['downloaded_bytes']*100) / d['total_bytes'])), end="")
+        elif d['status'] == 'finished':
+            if self.downloaded == False:
+                print('Downloading: Done')
+                self.downloaded = True
+            else:
+                print('Extracting: Done')
+                self.downloaded = False
+        elif d['status'] == 'error':
+            pass
+
+    def find_album(self, mbid: str, genereated: bool = True, download: bool = True):
 
         myAlbum = Album(mbid)
+        ydl_opts = {
+                'quiet':True,
+                'postprocessors': [{
+                    'key': 'FFmpegExtractAudio',
+                    'preferredcodec': 'mp3',
+                    'preferredquality': '320',
+                }],
+                'progress_hooks': [self.my_hook],
+                'logger': MyLogger(),
+        }
 
         for track in myAlbum.tracks:
             if genereated:
@@ -83,6 +124,21 @@ class YoutubeBZ:
                     if self.compare_title(myVideo.title, track['title']) > 0.8:
                         print('# {} [\033[32mOK\033[0m]'.format(track['title']))
                         print('https://www.youtube.com/watch?v=' + myVideo.id)
+                        if download == True:
+                            try:
+                                os.mkdir(myAlbum.title)
+                            except FileExistsError:
+                                pass
+                            ydl_opts['outtmpl'] = '{}.%(ext)s'.format(os.path.join(myAlbum.title,track['title']))
+                            while True:
+                                try:
+                                    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                                        ydl.download(['http://www.youtube.com/watch?v=' + myVideo.id])
+                                        break
+                                except youtube_dl.DownloadError:
+                                        # HACK: Workaround to make youtube_dl works
+                                        ydl.download([])
+                                        time.sleep(0.5)
                         finded = True
                         break
             if not finded:
