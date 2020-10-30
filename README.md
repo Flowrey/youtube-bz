@@ -31,7 +31,7 @@ or you can search in all Youtube
 $ youtube-bz -a -m MBID
 ```
 
-If you don't want to download the album you can pass the --no-download arugment
+If you don't want to download the album you can pass the --no-download argument
 ```
 $ youtube-bz --no-download -m MBID
 ```
