@@ -1,18 +1,26 @@
 from __future__ import unicode_literals
 
 import time
+import sys
 import os
 import re
 
 from datetime import timedelta
 
-import youtube_dl
+import pytube
+import moviepy.editor as mp
 
 from .api import YoutubeAPI, MusicBrainzAPI
 from .album import Album
 from .video import Video
-
 from difflib import SequenceMatcher
+
+def show_progress_bar(stream, chunk, bytes_remaining):
+  current = ((stream.filesize - bytes_remaining)/stream.filesize)
+  percent = ('{0:.1f}').format(current*100)
+  progress = int(50*current)
+  status = '█' * progress + '-' * (50 - progress)
+  print('Downloading  |{bar}| {percent}%\r'.format(bar=status, percent=percent), end='')
 
 class MyLogger(object):
     def debug(self, msg):
@@ -24,10 +32,14 @@ class MyLogger(object):
     def error(self, msg):
         pass
 
+
 class YoutubeBZ:
     """The main class of the program"""
 
     downloaded = False
+
+    def show_progress_bar(self, stream, chunk, file_handle, bytes_remaining):
+         return 'bonjour' 
 
     def search_album(self, artist: str, album: str):
         """Search the MBID of an album on MusicBrainz.
@@ -80,6 +92,7 @@ class YoutubeBZ:
         title = title.upper()
         title = re.sub(r'\([^\)]+\)', '', title)
         title = re.sub(r'[\ ]*$', '', title)
+
 
         return title
 
@@ -149,16 +162,6 @@ class YoutubeBZ:
         """
 
         myAlbum = Album(mbid)
-        ydl_opts = {
-                'quiet':True,
-                'postprocessors': [{
-                    'key': 'FFmpegExtractAudio',
-                    'preferredcodec': 'mp3',
-                    'preferredquality': '320',
-                }],
-                'progress_hooks': [self.my_hook],
-                'logger': MyLogger(),
-        }
 
         for track in myAlbum.tracks:
             if genereated:
@@ -174,27 +177,41 @@ class YoutubeBZ:
 
                 if self.compare_length(myVideo.length, track['length']) < 15:
                     if self.compare_title(myVideo.title, track['title']) > 0.8:
-                        print('# {} [\033[32mOK\033[0m]'.format(track['title']))
+                        if sys.platform.startswith('win32'):
+                            print('# {} [OK]'.format(track['title']))
+                        else:
+                            print('# {} [\033[32mOK\033[0m]'.format(track['title']))
                         print('https://www.youtube.com/watch?v=' + myVideo.id)
                         if download == True:
+                            # Windows invalid character
+                            track['title'] = re.sub(r'[<>:"\/\\|?*,$]', '_', track['title'])
+                            myAlbum.title = re.sub(r'[<>:"\/\\|?*,$]', '_', myAlbum.title)
+
                             try:
                                 os.mkdir(myAlbum.title)
                             except FileExistsError:
                                 pass
-                            ydl_opts['outtmpl'] = '{}.%(ext)s'.format(os.path.join(myAlbum.title,track['title']))
-                            # FIXME: This is really not an elegant way to do this
-                            # but it's the only way i've found to make it work.
+                            
                             while True:
                                 try:
-                                    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                                        ydl.download(['http://www.youtube.com/watch?v=' + myVideo.id])
-                                        break
-                                except youtube_dl.DownloadError:
-                                        # HACK: Workaround to make youtube_dl works
-                                        ydl.download([])
-                                        time.sleep(0.5)
+                                    yt = pytube.YouTube('https://www.youtube.com/watch?v=' + myVideo.id)
+                                    break
+                                except pytube.exceptions.RegexMatchError:
+                                    pass
+
+                            yt.streams.filter(only_audio=True).get_audio_only()
+                            yt.register_on_progress_callback(show_progress_bar)
+                            
+                            yt.streams.first().download(myAlbum.title, filename=track['title'])
+
+                            clip = mp.VideoFileClip(r'{}.mp4'.format(os.path.join(myAlbum.title, track['title'])))
+                            clip.audio.write_audiofile('{}.mp3'.format(os.path.join(myAlbum.title, track['title'])), bitrate='3000k', verbose=False, logger=None, nbytes=4, fps=48000)
+                            os.remove('{}.mp4'.format(os.path.join(myAlbum.title, track['title'])))
+                            print('\r')
                         finded = True
                         break
             if not finded:
-               print('# {} [\033[33mFail\033[0m]'.format(track['title']))
-            
+                if sys.platform.startswith('win32'):
+                    print('# {} [Fail]'.format(track['title']))
+                else:
+                    print('# {} [\033[33mFail\033[0m]'.format(track['title']))

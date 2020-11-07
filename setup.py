@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="youtube_bz",
-    version="0.1.0",
+    version="0.2.1",
     author="Flowrey",
     description="YoutubeBrainz allow you to find Youtube Videos associated to an Album on MusicBrainZ. ",
     long_description=long_description,
@@ -18,7 +18,7 @@ setuptools.setup(
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     ],
     python_requires='>=3.6',
-    install_requires=['requests', 'youtube_dl'],
+    install_requires=['requests', 'pytube', 'moviepy'],
     entry_points = {
         'console_scripts': [
             'youtube-bz = youtube_bz:main',
