@@ -25,11 +25,6 @@
   
 ## Getting Started
 
-### Prerequisites
-
-This software depends on [youtube-dl](https://youtube-dl.org/) to download the videos.
-To extract the audio youtube-dl need either [avconv](https://libav.org/) or [ffmpeg](https://www.ffmpeg.org/).
-
 ### Installation
 
 You can install youtube-bz directly from pip, it should install automatically all the dependencies
