@@ -9,7 +9,7 @@
 <p align="center">
 <img src="https://img.shields.io/badge/docs-passing-success"></a>
 <img src="https://img.shields.io/badge/python-3-blue"></a>
-<img src="https://img.shields.io/badge/pypi-0.1.0-blue"></a>
+<img src="https://img.shields.io/badge/pypi-0.2.2-blue"></a>
 <img src="https://img.shields.io/badge/license-GPL_3.0-blue.svg"></a>
 </p>
 
