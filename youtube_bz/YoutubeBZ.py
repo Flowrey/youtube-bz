@@ -184,8 +184,9 @@ class YoutubeBZ:
                         print('https://www.youtube.com/watch?v=' + myVideo.id)
                         if download == True:
                             # Windows invalid character
-                            track['title'] = re.sub(r'[<>:"\/\\|?*,$]', '_', track['title'])
-                            myAlbum.title = re.sub(r'[<>:"\/\\|?*,$]', '_', myAlbum.title)
+                            track['title'] = re.sub(r'[<>:"\/\\|?*]', '_', track['title'])
+                            track['title'] = pytube.helpers.safe_filename(track['title'])
+                            myAlbum.title = re.sub(r'[<>:"\/\\|?*]', '_', myAlbum.title)
 
                             try:
                                 os.mkdir(myAlbum.title)
