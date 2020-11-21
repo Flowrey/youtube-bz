@@ -2,10 +2,8 @@ import sys
 import argparse
 import re
 
-from .api import YoutubeAPI, MusicBrainzAPI
-from .album import Album
-from .video import Video
-from .YoutubeBZ import YoutubeBZ
+from .YoutubeBZ import Release, Track
+from .YoutubeSearch import YoutubeSearch
 
 def main():
     parser = argparse.ArgumentParser()
@@ -31,4 +29,5 @@ def main():
             sys.exit('{} not a valid MBID'.format(args.mbid))
         mbid = args.mbid
 
-    YoutubeBZ().find_album(mbid, args.all, args.no_download)
+    Release(mbid).download_album()
+

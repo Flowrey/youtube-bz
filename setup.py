@@ -18,7 +18,7 @@ setuptools.setup(
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     ],
     python_requires='>=3.6',
-    install_requires=['requests', 'pytube', 'moviepy'],
+    install_requires=['youtube-dl', 'mutagen'],
     entry_points = {
         'console_scripts': [
             'youtube-bz = youtube_bz:main',
