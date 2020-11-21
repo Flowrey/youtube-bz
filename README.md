@@ -14,8 +14,6 @@
 <img src="https://img.shields.io/badge/license-GPL_3.0-blue.svg"></a>
 </p>
 
-<p align="center"><img src="/img/demo.gif?raw=true"/></p>
-
 ## Summary
 
   - [Getting Started](#getting-started)
