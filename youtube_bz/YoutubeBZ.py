@@ -4,6 +4,7 @@ import urllib.request
 import urllib.parse
 import json
 import os
+import re
 
 from datetime import timedelta
 from difflib import SequenceMatcher
@@ -16,6 +17,7 @@ import mutagen
 ydl_opts = {
     'format': 'bestaudio/best',
     'nooverwrites' : True,
+    'keepvideo' : True,
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
     }],
@@ -24,22 +26,24 @@ ydl_opts = {
 class Track:
 
     def __init__(self, title, length, album, artist, tracknumber):
-        self.title = title
-        self.album = album
+        self.title = title.lower()
+        self.album = album.lower()
         self.length = timedelta(milliseconds = length)
-        self.artist = artist
+        self.artist = artist.lower()
         self.tracknumber = tracknumber
 
     def match_title(self, video_title):
         ratio = SequenceMatcher(None, self.title, video_title).ratio()
-        if ratio > 0.8:
+        if ratio > 0.7:
+            return True
+        elif self.title in video_title:
             return True
         else:
             return False
 
     def match_length(self, video_length):
         delta = abs(video_length.seconds - self.length.seconds)
-        if delta < 5:
+        if delta < 10:
             return True
         else:
             return False
@@ -48,6 +52,8 @@ class Track:
         for video in YoutubeSearch(self.title, self.album, self.artist).results:
             if self.match_title(video['title']) and self.match_length(video['length']):
                 self.url = 'https://www.youtube.com/watch?v=' + video['id']
+                return 0
+        return 1
 
     def write_tags(self, path):
         audio = mutagen.File(path)
@@ -57,13 +63,24 @@ class Track:
         audio['tracknumber'] = u'{}'.format(self.tracknumber)
         audio.save()
 
+    def my_hook(self, d):
+        if d['status'] == 'finished':
+            pass
+
     def download(self, path='.'):
-        self.find_url()
+        if self.find_url() == 1:
+            print('[youtube-bz] Can\'t find {}'.format(self.title))
+            return 1
         ydl_opts['outtmpl'] = os.path.join(path, '{}.%(ext)s'.format(self.title))
+        ydl_opts['progress_hooks'] = [self.my_hook]
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([self.url])
-        self.write_tags(os.path.join(path, '{}.opus'.format(self.title)))
 
+        for file_name in os.listdir(path):
+            if not file_name.split('.')[-1] == 'webm':
+                re_file = re.match(r'{}\.(.*)'.format(self.title), file_name)
+                if re_file:
+                    self.write_tags(os.path.join(path, re_file.group(0)))
 
 class Release:
 

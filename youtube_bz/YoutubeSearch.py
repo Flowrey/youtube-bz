@@ -50,7 +50,7 @@ class YoutubeSearch:
                 for i in videoRenderer['thumbnailOverlays']:
                     if 'thumbnailOverlayTimeStatusRenderer' in i:
                         video = {}
-                        video['title'] = videoRenderer['title']['runs'][0]['text']
+                        video['title'] = videoRenderer['title']['runs'][0]['text'].lower()
                         video['id'] = videoRenderer['videoId']
                         length = i['thumbnailOverlayTimeStatusRenderer']['text']['simpleText'].split(':')
                         video['length'] = timedelta(minutes = int(length[0]), seconds = int(length[1]))
