@@ -1,18 +1,10 @@
+# YouTubeBrainz
 
-<h1 align="center">
-  YouTubeBrainz
-</h1>
+YoutubeBrainz allows you to find and download Youtube videos associated to an album on MusicBrainz.
 
-<p align="center">
-  YoutubeBrainz allows you to find and download Youtube videos associated to an album on MusicBrainz.
-</p>
-
-<p align="center">
-<img src="https://img.shields.io/badge/docs-passing-success"></a>
-<img src="https://img.shields.io/badge/python-3-blue"></a>
-<img src="https://img.shields.io/badge/pypi-1.0.0-blue">https://pypi.org/project/youtube-bz/</a>
-<img src="https://img.shields.io/badge/license-GPL_3.0-blue.svg"></a>
-</p>
+[![PyPi version](https://img.shields.io/badge/pypi-1.0.0-blue)](https://pypi.org/project/youtube-bz/)
+[![Python 3.6](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![GPL 3.0](https://img.shields.io/badge/license-GPL_3.0-blue.svg)](LICENSE.md)
 
 ## Summary
 
