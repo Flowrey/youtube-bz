@@ -16,8 +16,6 @@ import mutagen
 
 ydl_opts = {
     'format': 'bestaudio/best',
-    'nooverwrites' : True,
-    'keepvideo' : True,
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
     }],
@@ -48,8 +46,8 @@ class Track:
         else:
             return False
 
-    def find_url(self):
-        for video in YoutubeSearch(self.title, self.album, self.artist).results:
+    def find_url(self, generated=True):
+        for video in YoutubeSearch(self.title, self.album, self.artist, generated).results:
             if self.match_title(video['title']) and self.match_length(video['length']):
                 self.url = 'https://www.youtube.com/watch?v=' + video['id']
                 return 0
@@ -67,8 +65,8 @@ class Track:
         if d['status'] == 'finished':
             pass
 
-    def download(self, path='.'):
-        if self.find_url() == 1:
+    def download(self, path='.', generated=True):
+        if self.find_url(generated) == 1:
             print('[youtube-bz] Can\'t find {}'.format(self.title))
             return 1
         ydl_opts['outtmpl'] = os.path.join(path, '{}.%(ext)s'.format(self.title))
@@ -84,10 +82,11 @@ class Track:
 
 class Release:
 
-    def __init__(self, mbid):
+    def __init__(self, mbid, generated=True):
         self.__mbid = mbid
         self.tracks = []
         self.__parse()
+        self.generated = generated
 
     def __request(self):
         url = 'https://musicbrainz.org/ws/2/release/{}?'.format(self.__mbid)
@@ -110,4 +109,4 @@ class Release:
             pass
 
         for track in self.tracks:
-            track.download(self.title)
+            track.download(self.title, self.generated)

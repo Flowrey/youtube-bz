@@ -29,8 +29,11 @@ def gen_dict_extract(key: str, var: dict):
 
 class YoutubeSearch:
 
-    def __init__(self, title, album, artist ):
-        self.q = '+"{}" +"{}" +"{}" +"Auto-generated"'.format(artist, album, title)
+    def __init__(self, title, album, artist, generated=True):
+        if generated:
+            self.q = '+"{}" +"{}" +"{}" +"Auto-generated"'.format(artist, album, title)
+        else:
+            self.q = '+"{}" +"{}" +"{}"'.format(artist, album, title)
         self.results = []
         self.__parse()
         
