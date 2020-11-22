@@ -47,11 +47,6 @@ or you can search in all YouTube
 $ youtube-bz -a -m MBID
 ```
 
-If you don't want to download the album you can put in the --no-download argument
-```
-$ youtube-bz --no-download -m MBID
-```
-
 ## Author
   
   - **Flowrey** - [Flowrey](https://github.com/Flowrey)
