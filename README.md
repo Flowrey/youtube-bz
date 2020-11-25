@@ -18,6 +18,22 @@ YoutubeBrainz allows you to find and download Youtube videos associated to an al
 
 ### Installation
 
+In order to extract audio from Youtube video, you will need to install FFMPEG:
+
+Debian:
+```
+$ sudo apt install ffmpeg
+```
+
+Windows:
+```
+Download "ffmpeg-*-win64-gpl-*.*.zip" from:
+https://github.com/BtbN/FFmpeg-Builds/releases
+Unzip it
+Open the "bin" folder
+Copy ffmpeg.exe, ffplay.exe and ffprobe.exe into your C:\Windows\ folder
+```
+
 You can install youtube-bz directly from pip, it should install automatically all the dependencies
 ```
 $ sudo pip install youtube-bz
