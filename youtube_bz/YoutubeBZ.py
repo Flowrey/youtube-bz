@@ -24,24 +24,30 @@ ydl_opts = {
 class Track:
 
     def __init__(self, title, length, album, artist, tracknumber):
-        self.title = title.lower()
-        self.album = album.lower()
+        self.title = title
+        self.album = album
         self.length = timedelta(milliseconds = length)
-        self.artist = artist.lower()
+        self.artist = artist
         self.tracknumber = tracknumber
 
     def match_title(self, video_title):
-        ratio = SequenceMatcher(None, self.title, video_title).ratio()
+        music_title = self.title.lower()
+        music_title = re.sub(r'\(feat.*\)','', music_title)
+
+        video_title = video_title.lower()
+        video_title_title = re.sub(r'\(feat.*\)','', video_title)
+
+        ratio = SequenceMatcher(None, music_title, video_title).ratio()
         if ratio > 0.7:
             return True
-        elif self.title in video_title:
+        elif music_title in video_title:
             return True
         else:
             return False
 
     def match_length(self, video_length):
         delta = abs(video_length.seconds - self.length.seconds)
-        if delta < 10:
+        if delta < 20:
             return True
         else:
             return False
@@ -61,16 +67,12 @@ class Track:
         audio['tracknumber'] = u'{}'.format(self.tracknumber)
         audio.save()
 
-    def my_hook(self, d):
-        if d['status'] == 'finished':
-            pass
-
     def download(self, path='.', generated=True):
         if self.find_url(generated) == 1:
             print('[youtube-bz] Can\'t find {}'.format(self.title))
             return 1
+
         ydl_opts['outtmpl'] = os.path.join(path, '{}.%(ext)s'.format(self.title))
-        ydl_opts['progress_hooks'] = [self.my_hook]
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([self.url])
 

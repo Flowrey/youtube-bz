@@ -44,7 +44,7 @@ class YoutubeSearch:
         full_url = url + url_values
         data = urllib.request.urlopen(full_url)
         data = data.read().decode('utf-8')
-        return re.search(r'(var\ ytInitialData\ =\ )([^;]*)', data).group(2)
+        return re.search(r'(var\ ytInitialData\ =\ )(.*);</script>', data).group(2)
 
     def __parse(self):
         data = json.loads(self.__request())
