@@ -14,11 +14,27 @@ from .YoutubeSearch import YoutubeSearch
 import youtube_dl
 import mutagen
 
+class MyLogger(object):
+    def debug(self, msg):
+        pass
+
+    def warning(self, msg):
+        pass
+
+    def error(self, msg):
+        print(msg)
+
+def my_hook(d):
+    if d['status'] == 'finished':
+        pass
+
 ydl_opts = {
     'format': 'bestaudio/best',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
     }],
+    'logger': MyLogger(),
+    'progress_hooks': [my_hook],
 }
 
 class Track:
@@ -32,28 +48,38 @@ class Track:
 
     def match_title(self, video_title):
         music_title = self.title.lower()
-        music_title = re.sub(r'\(feat.*\)','', music_title)
+        music_title = re.sub(r'\'|<|>|/', '', music_title)
 
         video_title = video_title.lower()
-        video_title_title = re.sub(r'\(feat.*\)','', video_title)
+        video_title = re.sub(r'\'|<|>|/', '', video_title)
 
-        ratio = SequenceMatcher(None, music_title, video_title).ratio()
-        if ratio > 0.7:
+        artist_in_title = re.search(r'(.*)\ -\ (.*)', video_title)
+        if artist_in_title:
+            video_title = artist_in_title.group(2)
+
+        comentary_in_tile = re.search(r'(.*)\ \(official audio\)', video_title)
+        if comentary_in_tile:
+            video_title = comentary_in_tile.group(1)
+
+        if video_title.startswith(music_title):
             return True
-        elif music_title in video_title:
+        elif music_title.startswith(video_title):
+            return True
+        elif SequenceMatcher(None, music_title, video_title).ratio() > 0.7:
             return True
         else:
+            print("[DEBUG]: " + video_title)
             return False
 
     def match_length(self, video_length):
         delta = abs(video_length.seconds - self.length.seconds)
-        if delta < 20:
+        if delta < 10:
             return True
         else:
             return False
 
-    def find_url(self, generated=True):
-        for video in YoutubeSearch(self.title, self.album, self.artist, generated).results:
+    def find_url(self, mode):
+        for video in YoutubeSearch(self.title, self.album, self.artist, mode).results:
             if self.match_title(video['title']) and self.match_length(video['length']):
                 self.url = 'https://www.youtube.com/watch?v=' + video['id']
                 return 0
@@ -67,10 +93,21 @@ class Track:
         audio['tracknumber'] = u'{}'.format(self.tracknumber)
         audio.save()
 
-    def download(self, path='.', generated=True):
-        if self.find_url(generated) == 1:
-            print('[youtube-bz] Can\'t find {}'.format(self.title))
+    def download(self, path='.'):
+        mode = 0
+        print('[youtube-bz] Looking for: {}'.format(self.title))
+
+        while (mode < 3):
+            if self.find_url(mode) == 1:
+                mode = mode + 1
+            else:
+                break
+
+        if mode == 3:    
+            print('[youtube-bz] Error: Can\'t find {}'.format(self.title))
             return 1
+
+        print('[youtube-bz] Downloading: {}'.format(self.url))
 
         ydl_opts['outtmpl'] = os.path.join(path, '{}.%(ext)s'.format(self.title))
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
@@ -84,11 +121,10 @@ class Track:
 
 class Release:
 
-    def __init__(self, mbid, generated=True):
+    def __init__(self, mbid):
         self.__mbid = mbid
         self.tracks = []
         self.__parse()
-        self.generated = generated
 
     def __request(self):
         url = 'https://musicbrainz.org/ws/2/release/{}?'.format(self.__mbid)
@@ -111,4 +147,4 @@ class Release:
             pass
 
         for track in self.tracks:
-            track.download(self.title, self.generated)
+            track.download(self.title)
