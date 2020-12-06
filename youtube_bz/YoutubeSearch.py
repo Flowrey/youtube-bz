@@ -5,37 +5,17 @@ import json
 
 from datetime import timedelta
 
-def gen_dict_extract(key: str, var: dict):
-    """Search for a specif key inside a nested dictionary.
-    https://stackoverflow.com/questions/9807634/find-all-occurrences-of-a-key-in-nested-dictionaries-and-lists
-    Args:
-        key: A string representing the key we are looking for.
-        var: A dict in which we search the key.
-    Returns:
-        result: A yield representing either the dict or the list matching the key.
-    """ 
-
-    if hasattr(var,'items'):
-        for k, v in var.items():
-            if k == key:
-                yield v
-            if isinstance(v, dict):
-                for result in gen_dict_extract(key, v):
-                    yield result
-            elif isinstance(v, list):
-                for d in v:
-                    for result in gen_dict_extract(key, d):
-                        yield result
-
 class YoutubeSearch:
 
     def __init__(self, title, album, artist, mode=0):
 
         if mode == 0:
-            self.q = '+"{}" +"{}" intitle:+"{}" +"Auto-generated"'.format(artist, album, title)
+            self.q = 'intitle:"{} +"Auto-generated" +"{}"'.format(title, artist)
         elif mode == 1:
+            print("Second Try")
             self.q = '+"{}" +"{}" +"{}" +"Auto-generated"'.format(artist, album, title)
         elif mode == 2:
+            print("Third Try")
             self.q = '+"{}" +"{}" +"{}"'.format(artist, album, title)
 
         self.results = []
@@ -52,13 +32,20 @@ class YoutubeSearch:
 
     def __parse(self):
         data = json.loads(self.__request())
-        for videoRenderer in gen_dict_extract('videoRenderer', data):
-            if 'videoId' in videoRenderer:
-                for i in videoRenderer['thumbnailOverlays']:
-                    if 'thumbnailOverlayTimeStatusRenderer' in i:
-                        video = {}
-                        video['title'] = videoRenderer['title']['runs'][0]['text'].lower()
-                        video['id'] = videoRenderer['videoId']
-                        length = i['thumbnailOverlayTimeStatusRenderer']['text']['simpleText'].split(':')
-                        video['length'] = timedelta(minutes = int(length[0]), seconds = int(length[1]))
-                        self.results.append(video)
+        for videos in data['contents']['twoColumnSearchResultsRenderer']['primaryContents']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents']:
+            video = {}
+            if 'videoRenderer' in videos:
+                video['title'] = videos['videoRenderer']['title']['runs'][0]['text'].lower()
+                video['id'] = videos['videoRenderer']['videoId']
+                video['chanel'] = videos['videoRenderer']['longBylineText']['runs'][0]['text']
+                length = videos['videoRenderer']['thumbnailOverlays'][0]['thumbnailOverlayTimeStatusRenderer']['text']['simpleText'].split(':')
+                video['length'] = timedelta(minutes = int(length[0]), seconds = int(length[1]))
+                self.results.append(video)
+            elif 'shelfRenderer' in videos:
+                for items in videos['shelfRenderer']['content']['verticalListRenderer']['items']:
+                    video['title'] = items['videoRenderer']['title']['runs'][0]['text'].lower()
+                    video['id'] = items['videoRenderer']['videoId']
+                    video['chanel'] = items['videoRenderer']['longBylineText']['runs'][0]['text']
+                    length = items['videoRenderer']['thumbnailOverlays'][0]['thumbnailOverlayTimeStatusRenderer']['text']['simpleText'].split(':')
+                    video['length'] = timedelta(minutes = int(length[0]), seconds = int(length[1]))
+                    self.results.append(video)
