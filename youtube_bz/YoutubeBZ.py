@@ -68,7 +68,6 @@ class Track:
         elif SequenceMatcher(None, music_title, video_title).ratio() > 0.7:
             return True
         else:
-            print("[DEBUG]: " + video_title)
             return False
 
     def match_length(self, video_length):

@@ -12,10 +12,8 @@ class YoutubeSearch:
         if mode == 0:
             self.q = 'intitle:"{} +"Auto-generated" +"{}"'.format(title, artist)
         elif mode == 1:
-            print("Second Try")
             self.q = '+"{}" +"{}" +"{}" +"Auto-generated"'.format(artist, album, title)
         elif mode == 2:
-            print("Third Try")
             self.q = '+"{}" +"{}" +"{}"'.format(artist, album, title)
 
         self.results = []
