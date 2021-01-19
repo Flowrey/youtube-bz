@@ -33,7 +33,7 @@ class MyLogger(object):
         pass
 
 
-class YoutubeBZ:
+class YoutubeBZH:
     """The main class of the program"""
 
     downloaded = False
