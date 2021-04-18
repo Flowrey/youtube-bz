@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 
 import urllib.request
 import urllib.parse
+import mutagen
+import threading
 import json
 import os
 import re
@@ -12,7 +14,6 @@ from difflib import SequenceMatcher
 from .YoutubeSearch import YoutubeSearch
 
 import youtube_dl
-import mutagen
 
 class MyLogger(object):
     def debug(self, msg):
@@ -30,6 +31,7 @@ def my_hook(d):
 
 ydl_opts = {
     'format': 'bestaudio/best',
+    'nocheckcertificate': 'true',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
     }],
@@ -47,70 +49,48 @@ class Track:
         self.tracknumber = tracknumber
 
     def match_title(self, video_title):
-        music_title = self.title.lower()
-        music_title = re.sub(r'\'|<|>|/', '', music_title)
 
-        video_title = video_title.lower()
+        music_title = re.sub(r'\'|<|>|/', '', self.title.lower())
+        music_title = re.sub(r'\ \(feat\.\ .*\)$', '', self.title.lower())
+
         video_title = re.sub(r'\'|<|>|/', '', video_title)
+        video_title = re.sub(r'\ \(feat\.\ .*\)$', '', video_title)
 
-        artist_in_title = re.search(r'(.*)\ -\ (.*)', video_title)
-        if artist_in_title:
-            video_title = artist_in_title.group(2)
-
-        comentary_in_tile = re.search(r'(.*)\ \(official audio\)', video_title)
-        if comentary_in_tile:
-            video_title = comentary_in_tile.group(1)
-
-        if video_title.startswith(music_title):
+        if SequenceMatcher(None, music_title, video_title).ratio() > 0.7:
             return True
-        elif music_title.startswith(video_title):
-            return True
-        elif SequenceMatcher(None, music_title, video_title).ratio() > 0.7:
-            return True
-        else:
-            return False
+        return False
 
     def match_length(self, video_length):
-        delta = abs(video_length.seconds - self.length.seconds)
-        if delta < 10:
+        if abs(video_length.seconds - self.length.seconds) < 10:
             return True
-        else:
-            return False
-
-    def find_url(self, mode):
-        for video in YoutubeSearch(self.title, self.album, self.artist, mode).results:
-            if self.match_title(video['title']) and self.match_length(video['length']):
-                self.url = 'https://www.youtube.com/watch?v=' + video['id']
-                return 0
-        return 1
+        return False
 
     def write_tags(self, path):
-        audio = mutagen.File(path)
+        audio = mutagen.File(path, easy=True)
         audio['title'] = u'{}'.format(self.title)
         audio['album'] = u'{}'.format(self.album)
         audio['albumartist'] = u'{}'.format(self.artist)
         audio['tracknumber'] = u'{}'.format(self.tracknumber)
         audio.save()
 
-    def download(self, path='.'):
-        mode = 0
-        print('[youtube-bz] Looking for: {}'.format(self.title))
+    def find_url(self, videos):
+        for video in videos:
+            if self.match_title(video['title'].lower()) and self.match_length(video['length']):
+                self.url = 'https://www.youtube.com/watch?v=' + video['id']
+                return 0
+        return 1
 
-        while (mode < 3):
-            if self.find_url(mode) == 1:
-                mode = mode + 1
-            else:
-                break
-
-        if mode == 3:    
-            print('[youtube-bz] Error: Can\'t find {}'.format(self.title))
+    def download(self, videos, path='.'):
+        return_code = self.find_url(videos)
+        if return_code == 1:
+            print('[Error] Can\'t find : {}'.format(self.title))
             return 1
-
-        print('[youtube-bz] Downloading: {}'.format(self.url))
+        print('[Downloading] {} : {}'.format(self.title, self.url))
 
         ydl_opts['outtmpl'] = os.path.join(path, '{}.%(ext)s'.format(self.title))
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([self.url])
+        print('[Downloaded] {}'.format(self.title))
 
         for file_name in os.listdir(path):
             if not file_name.split('.')[-1] == 'webm':
@@ -129,8 +109,7 @@ class Release:
         url = 'https://musicbrainz.org/ws/2/release/{}?'.format(self.__mbid)
         args = {'inc': 'artists+recordings', 'fmt': 'json'}
         url_values = urllib.parse.urlencode(args)
-        full_url = url + url_values
-        data = urllib.request.urlopen(full_url)
+        data = urllib.request.urlopen(url + url_values)
         return data.read()
 
     def __parse(self):
@@ -145,5 +124,7 @@ class Release:
         except FileExistsError:
             pass
 
+        videos = YoutubeSearch(self.title, self.artist).results
         for track in self.tracks:
-            track.download(self.title)
+            x = threading.Thread(target=track.download, args=(videos, self.title,))
+            x.start()

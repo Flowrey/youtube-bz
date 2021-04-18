@@ -1,5 +1,6 @@
 import urllib.request
 import json
+import ssl
 
 class BrainzSearch:
 
@@ -11,9 +12,10 @@ class BrainzSearch:
     def __request_artist(self):
         url = 'https://musicbrainz.org/ws/2/artist?'
         args = {'query':self.artist, 'fmt': 'json'}
+        ctx = ssl.create_default_context() 
         url_values = urllib.parse.urlencode(args)
         full_url = url + url_values
-        data = urllib.request.urlopen(full_url)
+        data = urllib.request.urlopen(full_url,context=ssl._create_unverified_context())
         return data.read()
 
     def __request_album(self):
@@ -22,7 +24,7 @@ class BrainzSearch:
         args = {'query':self.album + 'AND arid:' + self.arid, 'fmt': 'json'}
         url_values = urllib.parse.urlencode(args)
         full_url = url + url_values
-        data = urllib.request.urlopen(full_url)
+        data = urllib.request.urlopen(full_url, context=ssl._create_unverified_context())
         return data.read()
 
     def __parse_artist(self):
