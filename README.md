@@ -55,8 +55,8 @@ $  youtube-bz MBID
   
 ## License
 
-This project is licensed under the [GPL-3.0](LICENSE.md)
-GNU General Public License v3.0 - see the [LICENSE.md](LICENSE.md) file for
+This project is licensed under the [GPL-3.0](LICENSE)
+GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for
 details
 
 ## Acknowledgments

@@ -1,9 +1,3 @@
-"""YoutubeBrainz init module
-
-YoutubeBrainz allow you to find and download Youtube videos
-associated to an Album on MusicBrainz.
-"""
-
 import argparse
 import aiohttp
 import asyncio
