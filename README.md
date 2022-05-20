@@ -3,8 +3,11 @@
 YoutubeBrainz allows you to find and download Youtube videos associated to an album on MusicBrainz.
 
 [![PyPi version](https://img.shields.io/badge/pypi-0.3.0-blue)](https://pypi.org/project/youtube-bz/)
-[![Python 3.6](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/downloads/release/python-360/)
+[![Python 3.9](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/release/python-390/)
 [![GPL 3.0](https://img.shields.io/badge/license-GPL_3.0-blue.svg)](LICENSE.md)
+[![Coverage Status](https://coveralls.io/repos/github/Flowrey/youtube-bz/badge.svg?branch=master)](https://coveralls.io/github/Flowrey/youtube-bz?branch=master)
+![Coverage Status](https://github.com/flowrey/youtube-bz/actions/workflows/python-test.yml/badge.svg)
+
 
 ## Summary
 
@@ -12,7 +15,7 @@ YoutubeBrainz allows you to find and download Youtube videos associated to an al
   - [How to use](#how-to-use)
   - [Author](#author)
   - [License](#license)
-  - [Acknowledgments](#Acknowledgments)
+  - [Acknowledgments](#acknowledgments)
   
 ## Getting Started
 
