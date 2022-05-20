@@ -4,33 +4,17 @@ import asyncio
 import Levenshtein
 import ujson
 import youtube_dl
+import sys
 import re
 import os
 
 
-class MyLogger(object):
-    def debug(self, msg):
-        pass
-
-    def warning(self, msg):
-        pass
-
-    def error(self, msg):
-        print(msg)
-
-
-def my_hook(d):
-    if d['status'] == 'finished':
-        pass
-
-
 ydl_opts = {
+    'quiet': True,
     'format': 'bestaudio/best',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
     }],
-    'logger': MyLogger(),
-    'progress_hooks': [my_hook],
 }
 
 
@@ -68,18 +52,29 @@ async def get_best_match(yt_initial_data, track):
         A dict containing the video title and id, matching the track title.
 
     """
-    best_distance = None
-    best_match = None
-    for itemSectionRenderer in yt_initial_data['contents']['twoColumnSearchResultsRenderer']['primaryContents']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents']:
-        if 'videoRenderer' in itemSectionRenderer:
-            video = {'title': itemSectionRenderer['videoRenderer']['title']['runs'][0]['text'], 'id': itemSectionRenderer['videoRenderer']['videoId']}
-            distance = Levenshtein.distance(track['title'].lower(), video['title'].lower())
-            if best_distance is None:
-                best_distance = distance
-                best_match = video
-            if distance < best_distance:
-                best_distance = distance
-                best_match = video
+    contents = (itemSectionRenderer for itemSectionRenderer in yt_initial_data['contents']['twoColumnSearchResultsRenderer']['primaryContents']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents'] if 'videoRenderer' in itemSectionRenderer)
+
+    best_match = {
+        'title': next(contents)['videoRenderer']['title']['runs'][0]['text'],
+        'id': next(contents)['videoRenderer']['videoId']
+    }
+    best_distance = Levenshtein.distance(
+        track['title'].lower(),
+        best_match['title'].lower()
+    )
+
+    for itemSectionRenderer in contents:
+        video = {
+            'title': itemSectionRenderer['videoRenderer']['title']['runs'][0]['text'],
+            'id': itemSectionRenderer['videoRenderer']['videoId']
+        }
+        distance = Levenshtein.distance(
+            track['title'].lower(),
+            video['title'].lower()
+        )
+        if (distance < best_distance):
+            best_distance = distance
+            best_match = video
     return best_match
 
 
@@ -174,7 +169,6 @@ async def run(mbid):
     release = await get_musicbrainz_release(mbid)
     tasks = [chain_call(release, track) for track in release['media'][0]['tracks']]
     results = await asyncio.gather(*tasks)
-    print(results)
 
     # Run download in thread pool to avoid blocking IO
     for result in results:
@@ -182,9 +176,9 @@ async def run(mbid):
         loop.run_in_executor(None, download, result['title'], result['id'])
 
 
-def main():
+def main(sys_argv=sys.argv[1:]):
     parser = argparse.ArgumentParser(description="Find and download Youtube Videos associated to an Album on MusicBrainz.")
     parser.add_argument('mbid', help="music brainz identifer of a release")
-    args = parser.parse_args()
+    args = parser.parse_args(sys_argv)
     loop = asyncio.get_event_loop()
     loop.run_until_complete(run(args.mbid))
