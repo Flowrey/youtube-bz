@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2022-05-21
+### Added
+- Unittest and code coverage
+### Fixed
+- Remaining debug print
+
 ## [0.3.0] - 2022-04-16
 ### Added
 - Asyncronous code execution 
@@ -16,5 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Refactoring of all code
 
-[Unreleased]: https://github.com/flowrey/youtube-bz/releases/tag/v0.3.0...HEAD
+[Unreleased]: https://github.com/flowrey/youtube-bz/releases/tag/v0.3.1...HEAD
+[0.3.1]: https://github.com/flowrey/youtube-bz/releases/tag/v0.3.1
 [0.3.0]: https://github.com/flowrey/youtube-bz/releases/tag/v0.3.0
