@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.2] - 2022-05-24
+### Fixed
+- Bug when video render in youtube initial data was empty
+
 ## [0.3.1] - 2022-05-21
 ### Added
 - Unittest and code coverage
@@ -22,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Refactoring of all code
 
-[Unreleased]: https://github.com/flowrey/youtube-bz/releases/tag/v0.3.1...HEAD
+[Unreleased]: https://github.com/flowrey/youtube-bz/releases/tag/v0.3.2...HEAD
+[0.3.2]: https://github.com/flowrey/youtube-bz/releases/tag/v0.3.2
 [0.3.1]: https://github.com/flowrey/youtube-bz/releases/tag/v0.3.1
 [0.3.0]: https://github.com/flowrey/youtube-bz/releases/tag/v0.3.0
