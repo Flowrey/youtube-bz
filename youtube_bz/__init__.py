@@ -1,3 +1,4 @@
+import logging
 import argparse
 import aiohttp
 import asyncio
@@ -8,6 +9,8 @@ import sys
 import re
 import os
 
+
+logging.basicConfig(level=logging.INFO)
 
 ydl_opts = {
     'quiet': True,
@@ -52,30 +55,29 @@ async def get_best_match(yt_initial_data, track):
         A dict containing the video title and id, matching the track title.
 
     """
-    contents = (itemSectionRenderer for itemSectionRenderer in yt_initial_data['contents']['twoColumnSearchResultsRenderer']['primaryContents']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents'] if 'videoRenderer' in itemSectionRenderer)
-
-    best_match = {
-        'title': next(contents)['videoRenderer']['title']['runs'][0]['text'],
-        'id': next(contents)['videoRenderer']['videoId']
-    }
-    best_distance = Levenshtein.distance(
-        track['title'].lower(),
-        best_match['title'].lower()
+    contents = (
+        itemSectionRenderer['videoRenderer']
+        for itemSectionRenderer in yt_initial_data['contents']['twoColumnSearchResultsRenderer']['primaryContents']['sectionListRenderer']['contents'][0]['itemSectionRenderer']['contents']
+        if 'videoRenderer' in itemSectionRenderer
     )
-
-    for itemSectionRenderer in contents:
-        video = {
-            'title': itemSectionRenderer['videoRenderer']['title']['runs'][0]['text'],
-            'id': itemSectionRenderer['videoRenderer']['videoId']
+    videos = [
+        {
+            'title': videoRenderer['title']['runs'][0]['text'],
+            'id': videoRenderer['videoId'],
+            'levenshtein': Levenshtein.distance(
+                track['title'].lower(),
+                videoRenderer['title']['runs'][0]['text']
+            )
         }
-        distance = Levenshtein.distance(
-            track['title'].lower(),
-            video['title'].lower()
-        )
-        if (distance < best_distance):
-            best_distance = distance
-            best_match = video
-    return best_match
+        for videoRenderer in contents
+    ]
+    best_matchs = sorted(videos, key=lambda d: d['levenshtein'])
+    logging.debug(best_matchs)
+
+    if len(best_matchs) > 0:
+        return best_matchs[0]
+    else:
+        return None
 
 
 async def get_yt_intital_data(search_results):
@@ -113,7 +115,8 @@ async def get_search_query(release, track):
         A search query for YouTube.
 
     """
-    search_query = f'"{release["artist-credit"][0]["name"]}" "{release["title"]}" "{track["title"]}" "Auto-generated"'
+    # search_query = f'"{release["artist-credit"][0]["name"]}" "{release["title"]}" "{track["title"]}" "Auto-generated"'
+    search_query = f'"{release["artist-credit"][0]["name"]}" "{track["title"]}" "Auto-generated"'
     return search_query
 
 
@@ -172,8 +175,9 @@ async def run(mbid):
 
     # Run download in thread pool to avoid blocking IO
     for result in results:
-        loop = asyncio.get_running_loop()
-        loop.run_in_executor(None, download, result['title'], result['id'])
+        if result:
+            loop = asyncio.get_running_loop()
+            loop.run_in_executor(None, download, result['title'], result['id'])
 
 
 def main(sys_argv=sys.argv[1:]):
