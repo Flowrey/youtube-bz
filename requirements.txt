@@ -1,4 +1,6 @@
-pytest
+tox
 coverage
 sphinx
-tox
+pytest
+pytest-asyncio
+pytest-mock
