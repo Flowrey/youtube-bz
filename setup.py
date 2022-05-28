@@ -20,10 +20,10 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
-    install_requires=['youtube-dl', 'aiohttp[speedups]', 'ujson', 'python-Levenshtein'],
+    install_requires=["youtube-dl", "aiohttp[speedups]", "ujson", "python-Levenshtein"],
     entry_points={
-        'console_scripts': [
-            'youtube-bz = youtube_bz:main',
+        "console_scripts": [
+            "youtube-bz = youtube_bz:main",
         ],
     },
 )
