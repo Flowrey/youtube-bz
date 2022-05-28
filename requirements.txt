@@ -3,4 +3,3 @@ coverage
 sphinx
 pytest
 pytest-asyncio
-pytest-mock
