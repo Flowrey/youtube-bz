@@ -4,23 +4,10 @@ import aiohttp
 import asyncio
 import Levenshtein
 import ujson
-import youtube_dl
 import sys
 import re
-import os
 
-
-logging.basicConfig(level=logging.INFO)
-
-ydl_opts = {
-    "quiet": True,
-    "format": "bestaudio/best",
-    "postprocessors": [
-        {
-            "key": "FFmpegExtractAudio",
-        }
-    ],
-}
+from pytube import YouTube
 
 
 def download(title, video_id):
@@ -35,9 +22,8 @@ def download(title, video_id):
 
     """
     print("[Downloading] {} : {}".format(title, video_id))
-    ydl_opts["outtmpl"] = os.path.join(".", "{}.%(ext)s".format(title))
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([video_id])
+    yt = YouTube(f"http://youtube.com/watch?v={video_id}")
+    yt.streams.filter(only_audio=True)[-1].download()
     print("[Downloaded] {}".format(title))
 
 
@@ -122,7 +108,6 @@ async def get_search_query(release, track):
         A search query for YouTube.
 
     """
-    # search_query = f'"{release["artist-credit"][0]["name"]}" "{release["title"]}" "{track["title"]}" "Auto-generated"'
     search_query = (
         f'"{release["artist-credit"][0]["name"]}" "{track["title"]}" "Auto-generated"'
     )
@@ -199,5 +184,4 @@ def main(sys_argv=sys.argv[1:]):
     )
     parser.add_argument("mbid", help="music brainz identifer of a release")
     args = parser.parse_args(sys_argv)
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(run(args.mbid))
+    asyncio.run(run(args.mbid))

@@ -2,32 +2,12 @@ import asyncio
 import youtube_bz
 
 from unittest import IsolatedAsyncioTestCase
-from unittest.mock import patch
-from pathlib import Path
 
 mbid_list = [
     "a17a48b6-51db-3c52-8fdd-066fb9989f78",
     "6c1adf00-edaf-4fe0-9d57-8dc5da90a4a9",
     "b58549a2-0684-4808-9138-a2b4ad70631d",
 ]
-
-
-def mocked_youtube_dl(*args):
-    class MockedYoutubeDL:
-        def __init__(self, ydl_opts):
-            self.ydl_opts = ydl_opts
-
-        def __enter__(self):
-            return self
-
-        def __exit__(sel, *args):
-            return
-
-        def download(self, ydl_id_list):
-            for i in ydl_id_list:
-                Path(self.ydl_opts["outtmpl"] % {"ext": "mp3"}).touch()
-
-    return MockedYoutubeDL(*args)
 
 
 class TestYoutubeBrainz(IsolatedAsyncioTestCase):
@@ -74,11 +54,6 @@ class TestYoutubeBrainz(IsolatedAsyncioTestCase):
         search_query = await youtube_bz.get_search_query(release, track)
         assert search_query == '"Bring Me The Horizon" "MANTRA" "Auto-generated"'
 
-    @patch("youtube_dl.YoutubeDL", side_effect=mocked_youtube_dl)
-    def test_argv(self, mocked_youtube_dl):
-        youtube_bz.main(["6c1adf00-edaf-4fe0-9d57-8dc5da90a4a9"])
 
-    @patch("youtube_dl.YoutubeDL", side_effect=mocked_youtube_dl)
-    def test_download(self, mock_youtube_dl):
-        youtube_bz.download("The Walls Are Way Too Thin", "36hmuTxo88U")
-        self.assertTrue(Path("The Walls Are Way Too Thin.mp3").is_file())
+def test_main():
+    youtube_bz.main(["6c1adf00-edaf-4fe0-9d57-8dc5da90a4a9"])
