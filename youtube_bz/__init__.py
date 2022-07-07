@@ -2,12 +2,13 @@ import logging
 import argparse
 import aiohttp
 import asyncio
-import Levenshtein
-import ujson
+import json
 import sys
 import re
 
 from pytube import YouTube
+
+from .levenshtein_distance import levenshtein_distance
 
 
 def download(title, video_id):
@@ -58,7 +59,7 @@ async def get_best_match(yt_initial_data, track):
         {
             "title": videoRenderer["title"]["runs"][0]["text"],
             "id": videoRenderer["videoId"],
-            "levenshtein": Levenshtein.distance(
+            "levenshtein": levenshtein_distance(
                 track["title"].lower(), videoRenderer["title"]["runs"][0]["text"]
             ),
         }
@@ -89,7 +90,7 @@ async def get_yt_intital_data(search_results):
     """
     regex = r"(var\ ytInitialData\ =\ )(.*);</script><script"
     yt_initial_data = re.search(regex, search_results).group(2)
-    return ujson.loads(yt_initial_data)
+    return json.loads(yt_initial_data)
 
 
 async def get_search_query(release, track):
@@ -155,7 +156,7 @@ async def get_musicbrainz_release(mbid):
             f"/ws/2/release/{mbid}", params={"inc": "artists+recordings", "fmt": "json"}
         ) as response:
             html = await response.text()
-            return ujson.loads(html)
+            return json.loads(html)
 
 
 async def chain_call(release, track):
