@@ -62,12 +62,3 @@ def levenshtein_distance(first_word: str, second_word: str) -> int:
 
     # Returns the last element (distance)
     return previous_row[-1]
-
-
-if __name__ == "__main__":
-    first_word = input("Enter the first word:\n").strip()
-    second_word = input("Enter the second word:\n").strip()
-
-    result = levenshtein_distance(first_word, second_word)
-    print(f"Levenshtein distance between {first_word} and {second_word} is {result}")
-
