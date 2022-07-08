@@ -10,6 +10,8 @@ python3 -m doctest -v levenshtein-distance.py
 
 For manual testing run:
 python levenshtein-distance.py
+
+This code came from: https://github.com/TheAlgorithms/Python
 """
 
 

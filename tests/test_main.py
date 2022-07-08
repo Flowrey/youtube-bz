@@ -13,45 +13,46 @@ mbid_list = [
 class TestYoutubeBrainz(IsolatedAsyncioTestCase):
     async def test_get_best_match(self):
         for mbid in mbid_list:
-            release = await youtube_bz.get_musicbrainz_release(mbid)
+            release = await youtube_bz.musicbrainz.get_release(mbid)
             tasks = [
-                youtube_bz.chain_call(release, track)
+                youtube_bz.get_best_match(release, track)
                 for track in release["media"][0]["tracks"]
             ]
             results = await asyncio.gather(*tasks)
 
             for result in results:
-                self.assertIn("title", result)
-                self.assertIs(str, type(result["title"]))
-                self.assertIn("id", result)
-                self.assertIs(str, type(result["id"]))
-                self.assertRegex(result["id"], r"^[A-z0-9_-]{11}$")
+                if result:
+                    self.assertIn("title", result)
+                    self.assertIs(str, type(result["title"]))
+                    self.assertIn("id", result)
+                    self.assertIs(str, type(result["id"]))
+                    self.assertRegex(result["id"], r"^[A-z0-9_-]{11}$")
 
     async def test_empty_match(self):
-        release = await youtube_bz.get_musicbrainz_release(
+        release = await youtube_bz.musicbrainz.get_release(
             "b58549a2-0684-4808-9138-a2b4ad70631d"
         )
         for track in release["media"][0]["tracks"]:
-            search_query = f'"{release["artist-credit"][0]["name"]}" "{release["title"]}" "{track["title"]}" "Auto-generated"'
-            search_results = await youtube_bz.get_yt_search_results(search_query)
-            yt_initial_data = await youtube_bz.get_yt_intital_data(search_results)
-            await youtube_bz.get_best_match(yt_initial_data, track)
+            await youtube_bz.get_best_match(release, track)
 
     async def test_get_yt_search_results(self):
-        await youtube_bz.get_yt_search_results(
+        yt = youtube_bz.YouTube()
+        await yt.get_search_results(
             '"Bring Me The Horizon" "MANTRA" "Auto-generated"'
         )
 
     async def test_get_yt_initial_data(self):
-        yt_search_results = await youtube_bz.get_yt_search_results(
+        yt = youtube_bz.YouTube()
+        yt_search_results = await yt.get_search_results(
             '"Bring Me The Horizon" "MANTRA" "Auto-generated"'
         )
-        await youtube_bz.get_yt_intital_data(yt_search_results)
+        yt.get_intital_data(yt_search_results)
 
     async def test_get_search_query(self):
+        yt = youtube_bz.YouTube()
         release = {"artist-credit": [{"name": "Bring Me The Horizon"}]}
         track = {"title": "MANTRA"}
-        search_query = await youtube_bz.get_search_query(release, track)
+        search_query = yt.get_search_query(release, track)
         assert search_query == '"Bring Me The Horizon" "MANTRA" "Auto-generated"'
 
 
