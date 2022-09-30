@@ -4,12 +4,12 @@ import asyncio
 import pytube
 import sys
 
-from . import musicbrainz
-from .youtube import YouTube
+from .musicbrainz import Release, Track
+from . import youtube
 from .utils.levenshtein_distance import levenshtein_distance
 
 
-def download(title, video_id):
+def download(title: str, video_id: str):
     """Download audio of a YouTube video.
 
     Parameters
@@ -21,17 +21,18 @@ def download(title, video_id):
 
     """
     print("[Downloading] {} : {}".format(title, video_id))
-    yt = pytube.YouTube(f"http://youtube.com/watch?v={video_id}")
-    yt.streams.filter(only_audio=True)[-1].download()
+    pytube.YouTube(f"http://youtube.com/watch?v={video_id}").streams.filter(
+        only_audio=True
+    )[-1].download()
     print("[Downloaded] {}".format(title))
 
 
-async def get_best_match(release, track):
+async def get_best_match(release: Release, track: Track):
     """Get YouTube video corresponding to MusicBrainz track.
 
     Parameters
     ----------
-    yt_initial_data : dict
+    release : dict
         YouTube initial data.
     track : dict
         MusicBrainz track object.
@@ -42,7 +43,6 @@ async def get_best_match(release, track):
         A dict containing the video title and id, matching the track title.
 
     """
-    youtube = YouTube()
     search_query = youtube.get_search_query(release, track)
     search_results = await youtube.get_search_results(search_query)
     yt_initial_data = youtube.get_intital_data(search_results)
@@ -63,7 +63,7 @@ async def get_best_match(release, track):
             "title": videoRenderer["title"]["runs"][0]["text"],
             "id": videoRenderer["videoId"],
             "levenshtein": levenshtein_distance(
-                track["title"].lower(), videoRenderer["title"]["runs"][0]["text"]
+                track.title.lower(), videoRenderer["title"]["runs"][0]["text"]
             ),
         }
         for videoRenderer in contents
@@ -76,10 +76,12 @@ async def get_best_match(release, track):
     return None
 
 
-async def youtube_bz(mbid):
+async def youtube_bz(mbid: str):
     # Get release info from MusicBrainz
-    release = await musicbrainz.get_release(mbid)
-    results = await asyncio.gather(*[get_best_match(release, track) for track in release["media"][0]["tracks"]])
+    release = await Release.from_mbid(mbid)
+    results = await asyncio.gather(
+        *[get_best_match(release, track) for track in release.media[0].tracks]
+    )
 
     # Run download in thread pool to avoid blocking IO
     for result in results:
@@ -88,7 +90,7 @@ async def youtube_bz(mbid):
             loop.run_in_executor(None, download, result["title"], result["id"])
 
 
-def main(sys_argv=sys.argv[1:]):
+def main(sys_argv: list[str] = sys.argv[1:]):
     parser = argparse.ArgumentParser(
         description="Find and download Youtube Videos associated to an Album on MusicBrainz."
     )

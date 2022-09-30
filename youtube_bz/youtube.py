@@ -1,70 +1,69 @@
-import aiohttp
 import json
 import re
 
+import aiohttp
+from typing import Any
 
-class YouTube:
-    def __init__(self):
-        self.url = "https://www.youtube.com"
-        self.search_query = None
-        self.search_resuls = None
-        self.initial_data = None
+from .musicbrainz import Release, Track
+from .exceptions import FailedToParseYtIntialData
 
-    def get_search_query(self, release, track):
-        """Generate a search query for YouTube.
 
-        Parameters
-        ----------
-        release : dict
-            MusicBrainz release object.
-        track : dict
-            MusicBrainz track object.
+def get_search_query(release: Release, track: Track) -> str:
+    """Generate a search query for YouTube.
 
-        Returns
-        -------
-        str
-            A search query for YouTube.
-        """
-        if self.search_query is None:
-            self.search_query = f'"{release["artist-credit"][0]["name"]}" "{track["title"]}" "Auto-generated"'
-        return self.search_query
+    Parameters
+    ----------
+    release : Release
+        MusicBrainz release object.
+    track : Track
+        MusicBrainz track object.
 
-    async def get_search_results(self, search_query):
-        """Get YouTube search results.
+    Returns
+    -------
+    str
+        A search query for YouTube.
+    """
+    return f'"{release.artist_credit[0].name}" "{track.title}" "Auto-generated"'
 
-        Parameters
-        ----------
-        search_query : str
-            The query to request to YouTube.
 
-        Returns
-        -------
-        str
-            Raw YouTube search results.
+async def get_search_results(search_query: str) -> str:
+    """Get YouTube search results.
 
-        """
-        if self.search_resuls is None:
-            async with aiohttp.ClientSession(self.url) as session:
-                async with session.get("/results", params={"search_query": search_query}) as response:
-                    self.search_results = await response.text()
-        return self.search_results
+    Parameters
+    ----------
+    search_query : str
+        The query to request to YouTube.
 
-    def get_intital_data(self, search_results):
-        """Get YouTube initial data.
+    Returns
+    -------
+    str
+        Raw YouTube search results.
 
-        Parameters
-        ----------
-        search_results : str
-            Raw search results containing YouTube initial data.
+    """
+    url = "https://www.youtube.com"
+    async with aiohttp.ClientSession(url) as session:
+        async with session.get(
+            "/results", params={"search_query": search_query}
+        ) as response:
+            return await response.text()
 
-        Returns
-        -------
-        dict
-            A dict containing the YouTube initial data.
 
-        """
-        if self.initial_data is None:
-            regex = r"(var\ ytInitialData\ =\ )(.*);</script><script"
-            initial_data_match = re.search(regex, search_results).group(2)
-            self.initial_data = json.loads(initial_data_match)
-        return self.initial_data
+def get_intital_data(search_results: str) -> dict[Any, Any]:
+    """Get YouTube initial data.
+
+    Parameters
+    ----------
+    search_results : str
+        Raw search results containing YouTube initial data.
+
+    Returns
+    -------
+    dict
+        A dict containing the YouTube initial data.
+
+    """
+    initial_data_regex = re.compile(r"(var\ ytInitialData\ =\ )(.*);</script><script")
+    match = initial_data_regex.search(search_results)
+    if not match:
+        raise FailedToParseYtIntialData
+    return json.loads(match.group(2))

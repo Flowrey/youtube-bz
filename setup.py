@@ -20,7 +20,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
     ],
-    install_requires=["pytube", "aiohttp"],
+    install_requires=["pytube", "aiohttp", "pydantic"],
     entry_points={
         "console_scripts": [
             "youtube-bz = youtube_bz:main",
