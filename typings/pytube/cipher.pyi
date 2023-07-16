@@ -20,14 +20,12 @@ signature and decoding it.
 
 """
 logger = ...
+
 class Cipher:
-    def __init__(self, js: str) -> None:
-        ...
-    
-    def calculate_n(self, initial_n: list): # -> str | LiteralString:
+    def __init__(self, js: str) -> None: ...
+    def calculate_n(self, initial_n: list):  # -> str | LiteralString:
         """Converts n to the correct value to prevent throttling."""
         ...
-    
     def get_signature(self, ciphered_signature: str) -> str:
         """Decipher the signature.
 
@@ -40,7 +38,6 @@ class Cipher:
             Decrypted signature required to download the media content.
         """
         ...
-    
     @cache
     def parse_function(self, js_func: str) -> Tuple[str, int]:
         """Parse the Javascript transform function.
@@ -61,8 +58,6 @@ class Cipher:
 
         """
         ...
-    
-
 
 def get_initial_function_name(js: str) -> str:
     """Extract the name of the function responsible for computing the signature.
@@ -167,7 +162,7 @@ def get_throttling_function_array(js: str) -> List[Any]:
     """
     ...
 
-def get_throttling_plan(js: str): # -> list[Unknown]:
+def get_throttling_plan(js: str):  # -> list[Unknown]:
     """Extract the "throttling plan".
 
     The "throttling plan" is a list of tuples used for calling functions
@@ -182,7 +177,7 @@ def get_throttling_plan(js: str): # -> list[Unknown]:
     """
     ...
 
-def reverse(arr: List, _: Optional[Any]): # -> list[Unknown]:
+def reverse(arr: List, _: Optional[Any]):  # -> list[Unknown]:
     """Reverse elements in a list.
 
     This function is equivalent to:
@@ -201,7 +196,7 @@ def reverse(arr: List, _: Optional[Any]): # -> list[Unknown]:
     """
     ...
 
-def splice(arr: List, b: int): # -> list[Unknown]:
+def splice(arr: List, b: int):  # -> list[Unknown]:
     """Add/remove items to/from a list.
 
     This function is equivalent to:
@@ -217,7 +212,7 @@ def splice(arr: List, b: int): # -> list[Unknown]:
     """
     ...
 
-def swap(arr: List, b: int): # -> list[Unknown]:
+def swap(arr: List, b: int):  # -> list[Unknown]:
     """Swap positions at b modulus the list length.
 
     This function is equivalent to:
@@ -233,7 +228,7 @@ def swap(arr: List, b: int): # -> list[Unknown]:
     """
     ...
 
-def throttling_reverse(arr: list): # -> None:
+def throttling_reverse(arr: list):  # -> None:
     """Reverses the input list.
 
     Needs to do an in-place reversal so that the passed list gets changed.
@@ -242,11 +237,11 @@ def throttling_reverse(arr: list): # -> None:
     """
     ...
 
-def throttling_push(d: list, e: Any): # -> None:
+def throttling_push(d: list, e: Any):  # -> None:
     """Pushes an element onto a list."""
     ...
 
-def throttling_mod_func(d: list, e: int): # -> int:
+def throttling_mod_func(d: list, e: int):  # -> int:
     """Perform the modular function from the throttling array functions.
 
     In the javascript, the modular operation is as follows:
@@ -256,7 +251,7 @@ def throttling_mod_func(d: list, e: int): # -> int:
     """
     ...
 
-def throttling_unshift(d: list, e: int): # -> None:
+def throttling_unshift(d: list, e: int):  # -> None:
     """Rotates the elements of the list to the right.
 
     In the javascript, the operation is as follows:
@@ -264,7 +259,7 @@ def throttling_unshift(d: list, e: int): # -> None:
     """
     ...
 
-def throttling_cipher_function(d: list, e: str): # -> None:
+def throttling_cipher_function(d: list, e: str):  # -> None:
     """This ciphers d with e to generate a new list.
 
     In the javascript, the operation is as follows:
@@ -282,7 +277,7 @@ def throttling_cipher_function(d: list, e: str): # -> None:
     """
     ...
 
-def throttling_nested_splice(d: list, e: int): # -> None:
+def throttling_nested_splice(d: list, e: int):  # -> None:
     """Nested splice function in throttling js.
 
     In the javascript, the operation is as follows:
@@ -305,7 +300,7 @@ def throttling_nested_splice(d: list, e: int): # -> None:
     """
     ...
 
-def throttling_prepend(d: list, e: int): # -> None:
+def throttling_prepend(d: list, e: int):  # -> None:
     """
 
     In the javascript, the operation is as follows:
@@ -322,11 +317,11 @@ def throttling_prepend(d: list, e: int): # -> None:
     """
     ...
 
-def throttling_swap(d: list, e: int): # -> None:
+def throttling_swap(d: list, e: int):  # -> None:
     """Swap positions of the 0'th and e'th elements in-place."""
     ...
 
-def js_splice(arr: list, start: int, delete_count=..., *items): # -> list[Unknown]:
+def js_splice(arr: list, start: int, delete_count=..., *items):  # -> list[Unknown]:
     """Implementation of javascript's splice function.
 
     :param list arr:
@@ -349,4 +344,3 @@ def map_functions(js_func: str) -> Callable:
         The JavaScript version of the transform function.
     """
     ...
-

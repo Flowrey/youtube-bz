@@ -7,7 +7,8 @@ from functools import lru_cache
 """Implements a simple wrapper around urlopen."""
 logger = ...
 default_range_size = ...
-def get(url, extra_headers=..., timeout=...): # -> _UrlopenRet:
+
+def get(url, extra_headers=..., timeout=...):  # -> _UrlopenRet:
     """Send an http GET request.
 
     :param str url:
@@ -20,7 +21,7 @@ def get(url, extra_headers=..., timeout=...): # -> _UrlopenRet:
     """
     ...
 
-def post(url, extra_headers=..., data=..., timeout=...): # -> _UrlopenRet:
+def post(url, extra_headers=..., data=..., timeout=...):  # -> _UrlopenRet:
     """Send an http POST request.
 
     :param str url:
@@ -35,14 +36,16 @@ def post(url, extra_headers=..., data=..., timeout=...): # -> _UrlopenRet:
     """
     ...
 
-def seq_stream(url, timeout=..., max_retries=...): # -> Generator[_UrlopenRet, Unknown, None]:
+def seq_stream(
+    url, timeout=..., max_retries=...
+):  # -> Generator[_UrlopenRet, Unknown, None]:
     """Read the response in sequence.
     :param str url: The URL to perform the GET request for.
     :rtype: Iterable[bytes]
     """
     ...
 
-def stream(url, timeout=..., max_retries=...): # -> Generator[_UrlopenRet, Any, None]:
+def stream(url, timeout=..., max_retries=...):  # -> Generator[_UrlopenRet, Any, None]:
     """Read the response in chunks.
     :param str url: The URL to perform the GET request for.
     :rtype: Iterable[bytes]
@@ -50,7 +53,7 @@ def stream(url, timeout=..., max_retries=...): # -> Generator[_UrlopenRet, Any, 
     ...
 
 @lru_cache()
-def filesize(url): # -> int:
+def filesize(url):  # -> int:
     """Fetch size in bytes of file at given URL
 
     :param str url: The URL to get the size of
@@ -59,7 +62,7 @@ def filesize(url): # -> int:
     ...
 
 @lru_cache()
-def seq_filesize(url): # -> int:
+def seq_filesize(url):  # -> int:
     """Fetch size in bytes of file at given URL from sequential requests
 
     :param str url: The URL to get the size of
@@ -67,7 +70,7 @@ def seq_filesize(url): # -> int:
     """
     ...
 
-def head(url): # -> dict[_UrlopenRet, _UrlopenRet]:
+def head(url):  # -> dict[_UrlopenRet, _UrlopenRet]:
     """Fetch headers returned http GET request.
 
     :param str url:
@@ -77,4 +80,3 @@ def head(url): # -> dict[_UrlopenRet, _UrlopenRet]:
         dictionary of lowercase headers
     """
     ...
-

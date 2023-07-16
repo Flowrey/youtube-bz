@@ -15,8 +15,10 @@ _default_clients = ...
 _token_timeout = ...
 _cache_dir = ...
 _token_file = ...
+
 class InnerTube:
     """Object for interacting with the innertube API."""
+
     def __init__(self, client=..., use_oauth=..., allow_cache=...) -> None:
         """Initialize an InnerTube object.
 
@@ -29,67 +31,56 @@ class InnerTube:
             Allows caching of oauth tokens on the machine.
         """
         ...
-    
-    def cache_tokens(self): # -> None:
+    def cache_tokens(self):  # -> None:
         """Cache tokens to file if allowed."""
         ...
-    
-    def refresh_bearer_token(self, force=...): # -> None:
+    def refresh_bearer_token(self, force=...):  # -> None:
         """Refreshes the OAuth token if necessary.
 
         :param bool force:
             Force-refresh the bearer token.
         """
         ...
-    
-    def fetch_bearer_token(self): # -> None:
+    def fetch_bearer_token(self):  # -> None:
         """Fetch an OAuth token."""
         ...
-    
     @property
-    def base_url(self): # -> Literal['https://www.youtube.com/youtubei/v1']:
+    def base_url(self):  # -> Literal['https://www.youtube.com/youtubei/v1']:
         """Return the base url endpoint for the innertube API."""
         ...
-    
     @property
-    def base_data(self): # -> dict[str, Unknown]:
+    def base_data(self):  # -> dict[str, Unknown]:
         """Return the base json data to transmit to the innertube API."""
         ...
-    
     @property
-    def base_params(self): # -> dict[str, Unknown]:
+    def base_params(self):  # -> dict[str, Unknown]:
         """Return the base query parameters to transmit to the innertube API."""
         ...
-    
-    def browse(self): # -> None:
+    def browse(self):  # -> None:
         """Make a request to the browse endpoint.
 
         TODO: Figure out how we can use this
         """
         ...
-    
-    def config(self): # -> None:
+    def config(self):  # -> None:
         """Make a request to the config endpoint.
 
         TODO: Figure out how we can use this
         """
         ...
-    
-    def guide(self): # -> None:
+    def guide(self):  # -> None:
         """Make a request to the guide endpoint.
 
         TODO: Figure out how we can use this
         """
         ...
-    
-    def next(self): # -> None:
+    def next(self):  # -> None:
         """Make a request to the next endpoint.
 
         TODO: Figure out how we can use this
         """
         ...
-    
-    def player(self, video_id): # -> Any:
+    def player(self, video_id):  # -> Any:
         """Make a request to the player endpoint.
 
         :param str video_id:
@@ -99,8 +90,7 @@ class InnerTube:
             Raw player info results.
         """
         ...
-    
-    def search(self, search_query, continuation=...): # -> Any:
+    def search(self, search_query, continuation=...):  # -> Any:
         """Make a request to the search endpoint.
 
         :param str search_query:
@@ -110,8 +100,7 @@ class InnerTube:
             Raw search query results.
         """
         ...
-    
-    def verify_age(self, video_id): # -> Any:
+    def verify_age(self, video_id):  # -> Any:
         """Make a request to the age_verify endpoint.
 
         Notable examples of the types of video this verification step is for:
@@ -125,13 +114,9 @@ class InnerTube:
             Returns information that includes a URL for bypassing certain restrictions.
         """
         ...
-    
-    def get_transcript(self, video_id): # -> Any:
+    def get_transcript(self, video_id):  # -> Any:
         """Make a request to the get_transcript endpoint.
 
         This is likely related to captioning for videos, but is currently untested.
         """
         ...
-    
-
-

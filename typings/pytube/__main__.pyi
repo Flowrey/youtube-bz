@@ -16,9 +16,19 @@ smaller peripheral modules and functions.
 
 """
 logger = ...
+
 class YouTube:
     """Core developer interface for pytube."""
-    def __init__(self, url: str, on_progress_callback: Optional[Callable[[Any, bytes, int], None]] = ..., on_complete_callback: Optional[Callable[[Any, Optional[str]], None]] = ..., proxies: Dict[str, str] = ..., use_oauth: bool = ..., allow_oauth_cache: bool = ...) -> None:
+
+    def __init__(
+        self,
+        url: str,
+        on_progress_callback: Optional[Callable[[Any, bytes, int], None]] = ...,
+        on_complete_callback: Optional[Callable[[Any, Optional[str]], None]] = ...,
+        proxies: Dict[str, str] = ...,
+        use_oauth: bool = ...,
+        allow_oauth_cache: bool = ...,
+    ) -> None:
         """Construct a :class:`YouTube <YouTube>`.
 
         :param str url:
@@ -39,71 +49,56 @@ class YouTube:
             These tokens are only generated if use_oauth is set to True as well.
         """
         ...
-    
-    def __repr__(self): # -> str:
+    def __repr__(self):  # -> str:
         ...
-    
-    def __eq__(self, o: object) -> bool:
-        ...
-    
+    def __eq__(self, o: object) -> bool: ...
     @property
-    def watch_html(self): # -> str | _UrlopenRet:
+    def watch_html(self):  # -> str | _UrlopenRet:
         ...
-    
     @property
-    def embed_html(self): # -> str | _UrlopenRet:
+    def embed_html(self):  # -> str | _UrlopenRet:
         ...
-    
     @property
-    def age_restricted(self): # -> bool:
+    def age_restricted(self):  # -> bool:
         ...
-    
     @property
-    def js_url(self): # -> str:
+    def js_url(self):  # -> str:
         ...
-    
     @property
-    def js(self): # -> str | _UrlopenRet | None:
+    def js(self):  # -> str | _UrlopenRet | None:
         ...
-    
     @property
-    def initial_data(self): # -> str:
+    def initial_data(self):  # -> str:
         ...
-    
     @property
-    def streaming_data(self): # -> Any:
+    def streaming_data(self):  # -> Any:
         """Return streamingData from video info."""
         ...
-    
     @property
-    def fmt_streams(self): # -> List[Stream]:
+    def fmt_streams(self):  # -> List[Stream]:
         """Returns a list of streams if they have been initialized.
 
         If the streams have not been initialized, finds all relevant
         streams and initializes them.
         """
         ...
-    
-    def check_availability(self): # -> None:
+    def check_availability(self):  # -> None:
         """Check whether the video is available.
 
         Raises different exceptions based on why the video is unavailable,
         otherwise does nothing.
         """
         ...
-    
     @property
-    def vid_info(self): # -> Dict[Unknown, Unknown] | Any:
+    def vid_info(self):  # -> Dict[Unknown, Unknown] | Any:
         """Parse the raw vid info and return the parsed result.
 
         :rtype: Dict[Any, Any]
         """
         ...
-    
-    def bypass_age_gate(self): # -> None:
+    def bypass_age_gate(self):  # -> None:
         """Attempt to update the vid_info by bypassing the age gate."""
         ...
-    
     @property
     def caption_tracks(self) -> List[pytube.Caption]:
         """Get a list of :class:`Caption <Caption>`.
@@ -111,7 +106,6 @@ class YouTube:
         :rtype: List[Caption]
         """
         ...
-    
     @property
     def captions(self) -> pytube.CaptionQuery:
         """Interface to query caption tracks.
@@ -119,7 +113,6 @@ class YouTube:
         :rtype: :class:`CaptionQuery <CaptionQuery>`.
         """
         ...
-    
     @property
     def streams(self) -> StreamQuery:
         """Interface to query both adaptive (DASH) and progressive streams.
@@ -127,7 +120,6 @@ class YouTube:
         :rtype: :class:`StreamQuery <StreamQuery>`.
         """
         ...
-    
     @property
     def thumbnail_url(self) -> str:
         """Get the thumbnail url image.
@@ -135,20 +127,17 @@ class YouTube:
         :rtype: str
         """
         ...
-    
     @property
-    def publish_date(self): # -> datetime | None:
+    def publish_date(self):  # -> datetime | None:
         """Get the publish date.
 
         :rtype: datetime
         """
         ...
-    
     @publish_date.setter
-    def publish_date(self, value): # -> None:
+    def publish_date(self, value):  # -> None:
         """Sets the publish date."""
         ...
-    
     @property
     def title(self) -> str:
         """Get the video title.
@@ -156,12 +145,10 @@ class YouTube:
         :rtype: str
         """
         ...
-    
     @title.setter
-    def title(self, value): # -> None:
+    def title(self, value):  # -> None:
         """Sets the title value."""
         ...
-    
     @property
     def description(self) -> str:
         """Get the video description.
@@ -169,7 +156,6 @@ class YouTube:
         :rtype: str
         """
         ...
-    
     @property
     def rating(self) -> float:
         """Get the video average rating.
@@ -178,7 +164,6 @@ class YouTube:
 
         """
         ...
-    
     @property
     def length(self) -> int:
         """Get the video length in seconds.
@@ -186,7 +171,6 @@ class YouTube:
         :rtype: int
         """
         ...
-    
     @property
     def views(self) -> int:
         """Get the number of the times the video has been viewed.
@@ -194,19 +178,16 @@ class YouTube:
         :rtype: int
         """
         ...
-    
     @property
     def author(self) -> str:
         """Get the video author.
         :rtype: str
         """
         ...
-    
     @author.setter
-    def author(self, value): # -> None:
+    def author(self, value):  # -> None:
         """Set the video author."""
         ...
-    
     @property
     def keywords(self) -> List[str]:
         """Get the video keywords.
@@ -214,7 +195,6 @@ class YouTube:
         :rtype: List[str]
         """
         ...
-    
     @property
     def channel_id(self) -> str:
         """Get the video poster's channel id.
@@ -222,7 +202,6 @@ class YouTube:
         :rtype: str
         """
         ...
-    
     @property
     def channel_url(self) -> str:
         """Construct the channel url for the video's poster from the channel id.
@@ -230,7 +209,6 @@ class YouTube:
         :rtype: str
         """
         ...
-    
     @property
     def metadata(self) -> Optional[YouTubeMetadata]:
         """Get the metadata for the video.
@@ -238,8 +216,9 @@ class YouTube:
         :rtype: YouTubeMetadata
         """
         ...
-    
-    def register_on_progress_callback(self, func: Callable[[Any, bytes, int], None]): # -> None:
+    def register_on_progress_callback(
+        self, func: Callable[[Any, bytes, int], None]
+    ):  # -> None:
         """Register a download progress callback function post initialization.
 
         :param callable func:
@@ -250,8 +229,9 @@ class YouTube:
 
         """
         ...
-    
-    def register_on_complete_callback(self, func: Callable[[Any, Optional[str]], None]): # -> None:
+    def register_on_complete_callback(
+        self, func: Callable[[Any, Optional[str]], None]
+    ):  # -> None:
         """Register a download complete callback function post initialization.
 
         :param callable func:
@@ -261,7 +241,6 @@ class YouTube:
 
         """
         ...
-    
     @staticmethod
     def from_id(video_id: str) -> YouTube:
         """Construct a :class:`YouTube <YouTube>` object from a video id.
@@ -270,9 +249,6 @@ class YouTube:
             The video id of the YouTube video.
 
         :rtype: :class:`YouTube <YouTube>`
-        
+
         """
         ...
-    
-
-

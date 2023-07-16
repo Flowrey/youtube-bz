@@ -7,6 +7,7 @@ from pytube import Playlist
 
 """Module for interacting with a user's youtube channel."""
 logger = ...
+
 class Channel(Playlist):
     def __init__(self, url: str, proxies: Optional[Dict[str, str]] = ...) -> None:
         """Construct a :class:`Channel <Channel>`.
@@ -17,17 +18,15 @@ class Channel(Playlist):
             (Optional) A dictionary of proxies to use for web requests.
         """
         ...
-    
     @property
-    def channel_name(self): # -> str:
+    def channel_name(self):  # -> str:
         """Get the name of the YouTube channel.
 
         :rtype: str
         """
         ...
-    
     @property
-    def channel_id(self): # -> str:
+    def channel_id(self):  # -> str:
         """Get the ID of the YouTube channel.
 
         This will return the underlying ID, not the vanity URL.
@@ -35,7 +34,6 @@ class Channel(Playlist):
         :rtype: str
         """
         ...
-    
     @property
     def vanity_url(self):
         """Get the vanity URL of the YouTube channel.
@@ -45,17 +43,15 @@ class Channel(Playlist):
         :rtype: str
         """
         ...
-    
     @property
-    def html(self): # -> _UrlopenRet:
+    def html(self):  # -> _UrlopenRet:
         """Get the html for the /videos page.
 
         :rtype: str
         """
         ...
-    
     @property
-    def playlists_html(self): # -> _UrlopenRet:
+    def playlists_html(self):  # -> _UrlopenRet:
         """Get the html for the /playlists page.
 
         Currently unused for any functionality.
@@ -63,9 +59,8 @@ class Channel(Playlist):
         :rtype: str
         """
         ...
-    
     @property
-    def community_html(self): # -> _UrlopenRet:
+    def community_html(self):  # -> _UrlopenRet:
         """Get the html for the /community page.
 
         Currently unused for any functionality.
@@ -73,9 +68,8 @@ class Channel(Playlist):
         :rtype: str
         """
         ...
-    
     @property
-    def featured_channels_html(self): # -> _UrlopenRet:
+    def featured_channels_html(self):  # -> _UrlopenRet:
         """Get the html for the /channels page.
 
         Currently unused for any functionality.
@@ -83,9 +77,8 @@ class Channel(Playlist):
         :rtype: str
         """
         ...
-    
     @property
-    def about_html(self): # -> _UrlopenRet:
+    def about_html(self):  # -> _UrlopenRet:
         """Get the html for the /about page.
 
         Currently unused for any functionality.
@@ -93,6 +86,3 @@ class Channel(Playlist):
         :rtype: str
         """
         ...
-    
-
-

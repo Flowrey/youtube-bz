@@ -6,6 +6,7 @@ from typing import Any, Callable, Dict, List, Optional, TypeVar
 
 """Various helper functions implemented by pytube."""
 logger = ...
+
 class DeferredGeneratorList:
     """A wrapper class for deferring list generation.
 
@@ -17,6 +18,7 @@ class DeferredGeneratorList:
     all simultaneously. This should allow for speed improvements for playlist
     and channel interactions.
     """
+
     def __init__(self, generator) -> None:
         """Construct a :class:`DeferredGeneratorList <DeferredGeneratorList>`.
 
@@ -26,39 +28,29 @@ class DeferredGeneratorList:
             (Optional) A function to call on the generator items to produce the list.
         """
         ...
-    
     def __eq__(self, other) -> bool:
         """We want to mimic list behavior for comparison."""
         ...
-    
     def __getitem__(self, key) -> Any:
         """Only generate items as they're asked for."""
         ...
-    
-    def __iter__(self): # -> Generator[Any, Any, None]:
+    def __iter__(self):  # -> Generator[Any, Any, None]:
         """Custom iterator for dynamically generated list."""
         ...
-    
     def __next__(self) -> Any:
         """Fetch next element in iterator."""
         ...
-    
     def __len__(self) -> int:
         """Return length of list of all items."""
         ...
-    
     def __repr__(self) -> str:
         """String representation of all items."""
         ...
-    
-    def __reversed__(self): # -> list[Unknown]:
+    def __reversed__(self):  # -> list[Unknown]:
         ...
-    
-    def generate_all(self): # -> None:
+    def generate_all(self):  # -> None:
         """Generate all items."""
         ...
-    
-
 
 def regex_search(pattern: str, string: str, group: int) -> str:
     """Shortcut method to search a string for a given pattern.
@@ -101,8 +93,9 @@ def setup_logger(level: int = ..., log_filename: Optional[str] = ...) -> None:
     ...
 
 GenericType = TypeVar("GenericType")
+
 def cache(func: Callable[..., GenericType]) -> GenericType:
-    """ mypy compatible annotation wrapper for lru_cache"""
+    """mypy compatible annotation wrapper for lru_cache"""
     ...
 
 def deprecated(reason: str) -> Callable:
@@ -126,9 +119,7 @@ def target_directory(output_path: Optional[str] = ...) -> str:
     """
     ...
 
-def install_proxy(proxy_handler: Dict[str, str]) -> None:
-    ...
-
+def install_proxy(proxy_handler: Dict[str, str]) -> None: ...
 def uniqueify(duped_list: List) -> List:
     """Remove duplicate items from a list, while maintaining list order.
 
@@ -140,7 +131,7 @@ def uniqueify(duped_list: List) -> List:
     """
     ...
 
-def generate_all_html_json_mocks(): # -> None:
+def generate_all_html_json_mocks():  # -> None:
     """Regenerate the video mock json files for all current test videos.
 
     This should automatically output to the test/mocks directory.
@@ -157,4 +148,3 @@ def create_mock_html_json(vid_id) -> Dict[str, Any]:
         Dict used to generate the json.gz file
     """
     ...
-

@@ -6,6 +6,7 @@ from typing import Dict, Optional
 
 class Caption:
     """Container for caption tracks."""
+
     def __init__(self, caption_track: Dict) -> None:
         """Construct a :class:`Caption <Caption>`.
 
@@ -13,17 +14,14 @@ class Caption:
             Caption track data extracted from ``watch_html``.
         """
         ...
-    
     @property
     def xml_captions(self) -> str:
         """Download the xml caption tracks."""
         ...
-    
     @property
     def json_captions(self) -> dict:
         """Download and parse the json caption tracks."""
         ...
-    
     def generate_srt_captions(self) -> str:
         """Generate "SubRip Subtitle" captions.
 
@@ -31,7 +29,6 @@ class Caption:
         recompiles them into the "SubRip Subtitle" format.
         """
         ...
-    
     @staticmethod
     def float_to_srt_time_format(d: float) -> str:
         """Convert decimal durations into proper srt format.
@@ -43,7 +40,6 @@ class Caption:
         float_to_srt_time_format(3.89) -> '00:00:03,890'
         """
         ...
-    
     def xml_caption_to_srt(self, xml_captions: str) -> str:
         """Convert xml caption tracks to "SubRip Subtitle (srt)".
 
@@ -51,8 +47,13 @@ class Caption:
             XML formatted caption tracks.
         """
         ...
-    
-    def download(self, title: str, srt: bool = ..., output_path: Optional[str] = ..., filename_prefix: Optional[str] = ...) -> str:
+    def download(
+        self,
+        title: str,
+        srt: bool = ...,
+        output_path: Optional[str] = ...,
+        filename_prefix: Optional[str] = ...,
+    ) -> str:
         """Write the media stream to disk.
 
         :param title:
@@ -77,10 +78,6 @@ class Caption:
         :rtype: str
         """
         ...
-    
-    def __repr__(self): # -> str:
+    def __repr__(self):  # -> str:
         """Printable object representation."""
         ...
-    
-
-

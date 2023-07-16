@@ -10,67 +10,60 @@ from pytube.helpers import DeferredGeneratorList, cache
 
 """Module to download a complete playlist from a youtube channel."""
 logger = ...
+
 class Playlist(Sequence):
     """Load a YouTube playlist with URL"""
-    def __init__(self, url: str, proxies: Optional[Dict[str, str]] = ...) -> None:
-        ...
-    
+
+    def __init__(self, url: str, proxies: Optional[Dict[str, str]] = ...) -> None: ...
     @property
-    def playlist_id(self): # -> str:
+    def playlist_id(self):  # -> str:
         """Get the playlist id.
 
         :rtype: str
         """
         ...
-    
     @property
-    def playlist_url(self): # -> str:
+    def playlist_url(self):  # -> str:
         """Get the base playlist url.
 
         :rtype: str
         """
         ...
-    
     @property
-    def html(self): # -> _UrlopenRet:
+    def html(self):  # -> _UrlopenRet:
         """Get the playlist page html.
 
         :rtype: str
         """
         ...
-    
     @property
-    def ytcfg(self): # -> str:
+    def ytcfg(self):  # -> str:
         """Extract the ytcfg from the playlist page html.
 
         :rtype: dict
         """
         ...
-    
     @property
-    def initial_data(self): # -> str:
+    def initial_data(self):  # -> str:
         """Extract the initial data from the playlist page html.
 
         :rtype: dict
         """
         ...
-    
     @property
-    def sidebar_info(self): # -> str:
+    def sidebar_info(self):  # -> str:
         """Extract the sidebar info from the playlist page html.
 
         :rtype: dict
         """
         ...
-    
     @property
-    def yt_api_key(self): # -> str:
+    def yt_api_key(self):  # -> str:
         """Extract the INNERTUBE_API_KEY from the playlist ytcfg.
 
         :rtype: str
         """
         ...
-    
     def trimmed(self, video_id: str) -> Iterable[str]:
         """Retrieve a list of YouTube video URLs trimmed at the given video ID
 
@@ -83,14 +76,12 @@ class Playlist(Sequence):
             List of video URLs from the playlist trimmed at the given ID
         """
         ...
-    
-    def url_generator(self): # -> Generator[str, Any, None]:
+    def url_generator(self):  # -> Generator[str, Any, None]:
         """Generator that yields video URLs.
 
         :Yields: Video URLs
         """
         ...
-    
     @property
     @cache
     def video_urls(self) -> DeferredGeneratorList:
@@ -100,10 +91,8 @@ class Playlist(Sequence):
         :returns: List of video URLs
         """
         ...
-    
-    def videos_generator(self): # -> Generator[YouTube, Any, None]:
+    def videos_generator(self):  # -> Generator[YouTube, Any, None]:
         ...
-    
     @property
     def videos(self) -> Iterable[YouTube]:
         """Yields YouTube objects of videos in this playlist
@@ -112,16 +101,9 @@ class Playlist(Sequence):
         :returns: List of YouTube
         """
         ...
-    
-    def __getitem__(self, i: Union[slice, int]) -> Union[str, List[str]]:
-        ...
-    
-    def __len__(self) -> int:
-        ...
-    
-    def __repr__(self) -> str:
-        ...
-    
+    def __getitem__(self, i: Union[slice, int]) -> Union[str, List[str]]: ...
+    def __len__(self) -> int: ...
+    def __repr__(self) -> str: ...
     @property
     @cache
     def last_updated(self) -> Optional[date]:
@@ -136,7 +118,6 @@ class Playlist(Sequence):
         :rtype: datetime.date
         """
         ...
-    
     @property
     @cache
     def title(self) -> Optional[str]:
@@ -146,55 +127,45 @@ class Playlist(Sequence):
         :rtype: Optional[str]
         """
         ...
-    
     @property
-    def description(self) -> str:
-        ...
-    
+    def description(self) -> str: ...
     @property
-    def length(self): # -> int:
+    def length(self):  # -> int:
         """Extract the number of videos in the playlist.
 
         :return: Playlist video count
         :rtype: int
         """
         ...
-    
     @property
-    def views(self): # -> int:
+    def views(self):  # -> int:
         """Extract view count for playlist.
 
         :return: Playlist view count
         :rtype: int
         """
         ...
-    
     @property
-    def owner(self): # -> str:
+    def owner(self):  # -> str:
         """Extract the owner of the playlist.
 
         :return: Playlist owner name.
         :rtype: str
         """
         ...
-    
     @property
-    def owner_id(self): # -> str:
+    def owner_id(self):  # -> str:
         """Extract the channel_id of the owner of the playlist.
 
         :return: Playlist owner's channel ID.
         :rtype: str
         """
         ...
-    
     @property
-    def owner_url(self): # -> str:
+    def owner_url(self):  # -> str:
         """Create the channel url of the owner of the playlist.
 
         :return: Playlist owner's channel url.
         :rtype: str
         """
         ...
-    
-
-

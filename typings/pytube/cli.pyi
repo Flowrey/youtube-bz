@@ -7,7 +7,8 @@ from pytube import Stream, YouTube
 
 """A simple command line application to download youtube videos."""
 logger = ...
-def main(): # -> None:
+
+def main():  # -> None:
     """Command line application to download youtube videos."""
     ...
 
@@ -19,7 +20,9 @@ def build_playback_report(youtube: YouTube) -> None:
     """
     ...
 
-def display_progress_bar(bytes_received: int, filesize: int, ch: str = ..., scale: float = ...) -> None:
+def display_progress_bar(
+    bytes_received: int, filesize: int, ch: str = ..., scale: float = ...
+) -> None:
     """Display a simple, pretty progress bar.
 
     Example:
@@ -40,10 +43,10 @@ def display_progress_bar(bytes_received: int, filesize: int, ch: str = ..., scal
     """
     ...
 
-def on_progress(stream: Stream, chunk: bytes, bytes_remaining: int) -> None:
-    ...
-
-def ffmpeg_process(youtube: YouTube, resolution: str, target: Optional[str] = ...) -> None:
+def on_progress(stream: Stream, chunk: bytes, bytes_remaining: int) -> None: ...
+def ffmpeg_process(
+    youtube: YouTube, resolution: str, target: Optional[str] = ...
+) -> None:
     """
     Decides the correct video stream to download, then calls _ffmpeg_downloader.
 
@@ -68,7 +71,9 @@ def download_by_itag(youtube: YouTube, itag: int, target: Optional[str] = ...) -
     """
     ...
 
-def download_by_resolution(youtube: YouTube, resolution: str, target: Optional[str] = ...) -> None:
+def download_by_resolution(
+    youtube: YouTube, resolution: str, target: Optional[str] = ...
+) -> None:
     """Start downloading a YouTube video.
 
     :param YouTube youtube:
@@ -80,7 +85,9 @@ def download_by_resolution(youtube: YouTube, resolution: str, target: Optional[s
     """
     ...
 
-def download_highest_resolution_progressive(youtube: YouTube, resolution: str, target: Optional[str] = ...) -> None:
+def download_highest_resolution_progressive(
+    youtube: YouTube, resolution: str, target: Optional[str] = ...
+) -> None:
     """Start downloading the highest resolution progressive stream.
 
     :param YouTube youtube:
@@ -101,7 +108,9 @@ def display_streams(youtube: YouTube) -> None:
     """
     ...
 
-def download_caption(youtube: YouTube, lang_code: Optional[str], target: Optional[str] = ...) -> None:
+def download_caption(
+    youtube: YouTube, lang_code: Optional[str], target: Optional[str] = ...
+) -> None:
     """Download a caption for the YouTube video.
 
     :param YouTube youtube:
@@ -115,7 +124,9 @@ def download_caption(youtube: YouTube, lang_code: Optional[str], target: Optiona
     """
     ...
 
-def download_audio(youtube: YouTube, filetype: str, target: Optional[str] = ...) -> None:
+def download_audio(
+    youtube: YouTube, filetype: str, target: Optional[str] = ...
+) -> None:
     """
     Given a filetype, downloads the highest quality available audio stream for a
     YouTube video.
@@ -129,5 +140,4 @@ def download_audio(youtube: YouTube, filetype: str, target: Optional[str] = ...)
     """
     ...
 
-if __name__ == "__main__":
-    ...
+if __name__ == "__main__": ...

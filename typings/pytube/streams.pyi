@@ -15,8 +15,10 @@ has been renamed to accommodate DASH (which serves the audio and video
 separately).
 """
 logger = ...
+
 class Stream:
     """Container for stream manifest data."""
+
     def __init__(self, stream: Dict, monostate: Monostate) -> None:
         """Construct a :class:`Stream <Stream>`.
 
@@ -27,7 +29,6 @@ class Stream:
             :class:`Stream <Stream>`.
         """
         ...
-    
     @property
     def is_adaptive(self) -> bool:
         """Whether the stream is DASH.
@@ -35,7 +36,6 @@ class Stream:
         :rtype: bool
         """
         ...
-    
     @property
     def is_progressive(self) -> bool:
         """Whether the stream is progressive.
@@ -43,7 +43,6 @@ class Stream:
         :rtype: bool
         """
         ...
-    
     @property
     def includes_audio_track(self) -> bool:
         """Whether the stream only contains audio.
@@ -51,7 +50,6 @@ class Stream:
         :rtype: bool
         """
         ...
-    
     @property
     def includes_video_track(self) -> bool:
         """Whether the stream only contains video.
@@ -59,7 +57,6 @@ class Stream:
         :rtype: bool
         """
         ...
-    
     def parse_codecs(self) -> Tuple[Optional[str], Optional[str]]:
         """Get the video/audio codecs from list of codecs.
 
@@ -74,7 +71,6 @@ class Stream:
 
         """
         ...
-    
     @property
     def filesize(self) -> int:
         """File size of the media stream in bytes.
@@ -84,7 +80,6 @@ class Stream:
             Filesize (in bytes) of the stream.
         """
         ...
-    
     @property
     def filesize_kb(self) -> float:
         """File size of the media stream in kilobytes.
@@ -94,7 +89,6 @@ class Stream:
             Rounded filesize (in kilobytes) of the stream.
         """
         ...
-    
     @property
     def filesize_mb(self) -> float:
         """File size of the media stream in megabytes.
@@ -104,7 +98,6 @@ class Stream:
             Rounded filesize (in megabytes) of the stream.
         """
         ...
-    
     @property
     def filesize_gb(self) -> float:
         """File size of the media stream in gigabytes.
@@ -114,7 +107,6 @@ class Stream:
             Rounded filesize (in gigabytes) of the stream.
         """
         ...
-    
     @property
     def title(self) -> str:
         """Get title of video
@@ -124,7 +116,6 @@ class Stream:
             Youtube video title
         """
         ...
-    
     @property
     def filesize_approx(self) -> int:
         """Get approximate filesize of the video
@@ -135,11 +126,8 @@ class Stream:
         :returns: size of video in bytes
         """
         ...
-    
     @property
-    def expiration(self) -> datetime:
-        ...
-    
+    def expiration(self) -> datetime: ...
     @property
     def default_filename(self) -> str:
         """Generate filename based on the video title.
@@ -149,8 +137,15 @@ class Stream:
             An os file system compatible filename.
         """
         ...
-    
-    def download(self, output_path: Optional[str] = ..., filename: Optional[str] = ..., filename_prefix: Optional[str] = ..., skip_existing: bool = ..., timeout: Optional[int] = ..., max_retries: Optional[int] = ...) -> str:
+    def download(
+        self,
+        output_path: Optional[str] = ...,
+        filename: Optional[str] = ...,
+        filename_prefix: Optional[str] = ...,
+        skip_existing: bool = ...,
+        timeout: Optional[int] = ...,
+        max_retries: Optional[int] = ...,
+    ) -> str:
         """Write the media stream to disk.
 
         :param output_path:
@@ -183,21 +178,22 @@ class Stream:
 
         """
         ...
-    
-    def get_file_path(self, filename: Optional[str] = ..., output_path: Optional[str] = ..., filename_prefix: Optional[str] = ...) -> str:
-        ...
-    
-    def exists_at_path(self, file_path: str) -> bool:
-        ...
-    
+    def get_file_path(
+        self,
+        filename: Optional[str] = ...,
+        output_path: Optional[str] = ...,
+        filename_prefix: Optional[str] = ...,
+    ) -> str: ...
+    def exists_at_path(self, file_path: str) -> bool: ...
     def stream_to_buffer(self, buffer: BinaryIO) -> None:
         """Write the media stream to buffer
 
         :rtype: io.BytesIO buffer
         """
         ...
-    
-    def on_progress(self, chunk: bytes, file_handler: BinaryIO, bytes_remaining: int): # -> None:
+    def on_progress(
+        self, chunk: bytes, file_handler: BinaryIO, bytes_remaining: int
+    ):  # -> None:
         """On progress callback function.
 
         This function writes the binary data to the file, then checks if an
@@ -218,8 +214,7 @@ class Stream:
 
         """
         ...
-    
-    def on_complete(self, file_path: Optional[str]): # -> None:
+    def on_complete(self, file_path: Optional[str]):  # -> None:
         """On download complete handler function.
 
         :param file_path:
@@ -230,7 +225,6 @@ class Stream:
 
         """
         ...
-    
     def __repr__(self) -> str:
         """Printable object representation.
 
@@ -239,6 +233,3 @@ class Stream:
             A string representation of a :class:`Stream <Stream>` object.
         """
         ...
-    
-
-

@@ -7,7 +7,8 @@ from pytube.metadata import YouTubeMetadata
 
 """This module contains all non-cipher related data extraction logic."""
 logger = ...
-def publish_date(watch_html: str): # -> datetime | None:
+
+def publish_date(watch_html: str):  # -> datetime | None:
     """Extract publish date
     :param str watch_html:
         The html contents of the watch page.
@@ -17,7 +18,7 @@ def publish_date(watch_html: str): # -> datetime | None:
     """
     ...
 
-def recording_available(watch_html): # -> bool:
+def recording_available(watch_html):  # -> bool:
     """Check if live stream recording is available.
 
     :param str watch_html:
@@ -28,7 +29,7 @@ def recording_available(watch_html): # -> bool:
     """
     ...
 
-def is_private(watch_html): # -> bool:
+def is_private(watch_html):  # -> bool:
     """Check if content is private.
 
     :param str watch_html:
@@ -285,4 +286,3 @@ def metadata(initial_data) -> Optional[YouTubeMetadata]:
     :rtype: YouTubeMetadata
     """
     ...
-

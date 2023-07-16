@@ -8,8 +8,10 @@ from pytube import Caption, Stream
 from pytube.helpers import deprecated
 
 """This module provides a query interface for media streams and captions."""
+
 class StreamQuery(Sequence):
     """Interface for querying the available media streams."""
+
     def __init__(self, fmt_streams) -> None:
         """Construct a :class:`StreamQuery <StreamQuery>`.
 
@@ -17,8 +19,26 @@ class StreamQuery(Sequence):
             list of :class:`Stream <Stream>` instances.
         """
         ...
-    
-    def filter(self, fps=..., res=..., resolution=..., mime_type=..., type=..., subtype=..., file_extension=..., abr=..., bitrate=..., video_codec=..., audio_codec=..., only_audio=..., only_video=..., progressive=..., adaptive=..., is_dash=..., custom_filter_functions=...) -> StreamQuery : # -> StreamQuery:
+    def filter(
+        self,
+        fps=...,
+        res=...,
+        resolution=...,
+        mime_type=...,
+        type=...,
+        subtype=...,
+        file_extension=...,
+        abr=...,
+        bitrate=...,
+        video_codec=...,
+        audio_codec=...,
+        only_audio=...,
+        only_video=...,
+        progressive=...,
+        adaptive=...,
+        is_dash=...,
+        custom_filter_functions=...,
+    ) -> StreamQuery:  # -> StreamQuery:
         """Apply the given filtering criterion.
 
         :param fps:
@@ -103,7 +123,6 @@ class StreamQuery(Sequence):
 
         """
         ...
-    
     def order_by(self, attribute_name: str) -> StreamQuery:
         """Apply a sort order. Filters out stream the do not have the attribute.
 
@@ -111,7 +130,6 @@ class StreamQuery(Sequence):
             The name of the attribute to sort by.
         """
         ...
-    
     def desc(self) -> StreamQuery:
         """Sort streams in descending order.
 
@@ -119,7 +137,6 @@ class StreamQuery(Sequence):
 
         """
         ...
-    
     def asc(self) -> StreamQuery:
         """Sort streams in ascending order.
 
@@ -127,7 +144,6 @@ class StreamQuery(Sequence):
 
         """
         ...
-    
     def get_by_itag(self, itag: int) -> Optional[Stream]:
         """Get the corresponding :class:`Stream <Stream>` for a given itag.
 
@@ -140,7 +156,6 @@ class StreamQuery(Sequence):
 
         """
         ...
-    
     def get_by_resolution(self, resolution: str) -> Optional[Stream]:
         """Get the corresponding :class:`Stream <Stream>` for a given resolution.
 
@@ -155,7 +170,6 @@ class StreamQuery(Sequence):
 
         """
         ...
-    
     def get_lowest_resolution(self) -> Optional[Stream]:
         """Get lowest resolution stream that is a progressive mp4.
 
@@ -166,7 +180,6 @@ class StreamQuery(Sequence):
 
         """
         ...
-    
     def get_highest_resolution(self) -> Optional[Stream]:
         """Get highest resolution stream that is a progressive video.
 
@@ -177,7 +190,6 @@ class StreamQuery(Sequence):
 
         """
         ...
-    
     def get_audio_only(self, subtype: str = ...) -> Optional[Stream]:
         """Get highest bitrate audio stream for given codec (defaults to mp4)
 
@@ -189,7 +201,6 @@ class StreamQuery(Sequence):
             not found.
         """
         ...
-    
     def otf(self, is_otf: bool = ...) -> StreamQuery:
         """Filter stream by OTF, useful if some streams have 404 URLs
 
@@ -198,7 +209,6 @@ class StreamQuery(Sequence):
         :returns: A StreamQuery object with otf filtered streams
         """
         ...
-    
     def first(self) -> Optional[Stream]:
         """Get the first :class:`Stream <Stream>` in the results.
 
@@ -209,8 +219,7 @@ class StreamQuery(Sequence):
 
         """
         ...
-    
-    def last(self): # -> None:
+    def last(self):  # -> None:
         """Get the last :class:`Stream <Stream>` in the results.
 
         :rtype: :class:`Stream <Stream>` or None
@@ -220,7 +229,6 @@ class StreamQuery(Sequence):
 
         """
         ...
-    
     @deprecated("Get the size of this list directly using len()")
     def count(self, value: Optional[str] = ...) -> int:
         """Get the count of items in the list.
@@ -228,7 +236,6 @@ class StreamQuery(Sequence):
         :rtype: int
         """
         ...
-    
     @deprecated("This object can be treated as a list, all() is useless")
     def all(self) -> List[Stream]:
         """Get all the results represented by this query as a list.
@@ -237,20 +244,13 @@ class StreamQuery(Sequence):
 
         """
         ...
-    
-    def __getitem__(self, i: Union[slice, int]):
-        ...
-    
-    def __len__(self) -> int:
-        ...
-    
-    def __repr__(self) -> str:
-        ...
-    
-
+    def __getitem__(self, i: Union[slice, int]): ...
+    def __len__(self) -> int: ...
+    def __repr__(self) -> str: ...
 
 class CaptionQuery(Mapping):
     """Interface for querying the available captions."""
+
     def __init__(self, captions: List[Caption]) -> None:
         """Construct a :class:`Caption <Caption>`.
 
@@ -259,7 +259,6 @@ class CaptionQuery(Mapping):
 
         """
         ...
-    
     @deprecated("This object can be treated as a dictionary, i.e. captions['en']")
     def get_by_language_code(self, lang_code: str) -> Optional[Caption]:
         """Get the :class:`Caption <Caption>` for a given ``lang_code``.
@@ -272,7 +271,6 @@ class CaptionQuery(Mapping):
             None if it does not exist.
         """
         ...
-    
     @deprecated("This object can be treated as a dictionary")
     def all(self) -> List[Caption]:
         """Get all the results represented by this query as a list.
@@ -281,18 +279,9 @@ class CaptionQuery(Mapping):
 
         """
         ...
-    
-    def __getitem__(self, i: str): # -> Caption:
+    def __getitem__(self, i: str):  # -> Caption:
         ...
-    
-    def __len__(self) -> int:
+    def __len__(self) -> int: ...
+    def __iter__(self):  # -> Iterator[Caption]:
         ...
-    
-    def __iter__(self): # -> Iterator[Caption]:
-        ...
-    
-    def __repr__(self) -> str:
-        ...
-    
-
-
+    def __repr__(self) -> str: ...
