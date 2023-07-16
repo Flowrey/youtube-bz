@@ -1,5 +1,7 @@
 name: Pyright
 
+on: [push, pull_request]
+
 jobs:
   pyright:
     runs-on: ubuntu-latest
