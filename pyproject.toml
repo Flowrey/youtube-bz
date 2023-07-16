@@ -19,6 +19,7 @@ pytest = "^7.4.0"
 pytest-asyncio = "^0.21.1"
 sphinx = "^7.0.1"
 coverage = "^7.2.7"
+black = "^23.7.0"
 
 [build-system]
 requires = ["poetry-core"]
