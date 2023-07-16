@@ -3,7 +3,9 @@ import argparse
 import asyncio
 import pytube
 import sys
+import typing
 
+from pytube import Stream
 from .musicbrainz import Release, Track
 from . import youtube
 from .utils.levenshtein_distance import levenshtein_distance
@@ -21,9 +23,11 @@ def download(title: str, video_id: str):
 
     """
     print("[Downloading] {} : {}".format(title, video_id))
-    pytube.YouTube(f"http://youtube.com/watch?v={video_id}").streams.filter(
+    query = pytube.YouTube(f"http://youtube.com/watch?v={video_id}").streams.filter(
         only_audio=True
-    )[-1].download()
+    )
+    stream: Stream = typing.cast(Stream, query[-1])
+    stream.download()
     print("[Downloaded] {}".format(title))
 
 
