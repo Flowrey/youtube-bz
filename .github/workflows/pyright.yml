@@ -18,3 +18,5 @@ jobs:
       - run: echo "$(poetry env info --path)/bin" >> $GITHUB_PATH
 
       - uses: jakebailey/pyright-action@v1
+        with:
+          project: pyproject.toml
