@@ -29,3 +29,4 @@ build-backend = "poetry.core.masonry.api"
 stubPath = "typings"
 venvPath = ".venv"
 typeCheckingMode = "strict"
+exclude = [".venv", "typings"]
