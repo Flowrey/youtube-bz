@@ -49,7 +49,9 @@ class TestYoutubeBrainz(IsolatedAsyncioTestCase):
 
     async def test_get_search_query(self):
         artist_credit = [ArtistCredit(name="Bring Me The Horizon")]
-        release = Release(**{"artist-credit": artist_credit, "media":[], "title":"Amo"})
+        release = Release(
+            **{"artist-credit": artist_credit, "media": [], "title": "Amo"}
+        )
         track = Track(title="MANTRA", position="2")
         search_query = youtube_bz.youtube.get_search_query(release, track)
         assert search_query == '"Bring Me The Horizon" "MANTRA" "Auto-generated"'
@@ -57,4 +59,3 @@ class TestYoutubeBrainz(IsolatedAsyncioTestCase):
 
 def test_main():
     youtube_bz.main(["6c1adf00-edaf-4fe0-9d57-8dc5da90a4a9"])
-

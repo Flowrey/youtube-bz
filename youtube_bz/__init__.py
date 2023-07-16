@@ -26,7 +26,7 @@ def download(title: str, video_id: str):
     query = pytube.YouTube(f"http://youtube.com/watch?v={video_id}").streams.filter(
         only_audio=True
     )
-    stream: Stream = typing.cast(Stream, query[-1])    
+    stream: Stream = typing.cast(Stream, query[-1])
     stream.download()
     print("[Downloaded] {}".format(title))
 
