@@ -39,6 +39,7 @@ class Release(BaseModel):
         async with aiohttp.ClientSession("https://musicbrainz.org") as session:
             async with session.get(
                 f"/ws/2/release/{mbid}",
+                headers={"User-Agent": "YoutubeBrainz/0.1.0"},
                 params={"inc": "artists+recordings", "fmt": "json"},
             ) as response:
                 data = await response.json()
