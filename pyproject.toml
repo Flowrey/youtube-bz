@@ -2,7 +2,7 @@
 name = "youtube-bz"
 version = "0.3.4"
 description = "YoutubeBrainz allow you to find and download Youtube Videos associated to an Album on MusicBrainz."
-authors = ["Flowrey <flowrey at laposte.net>"]
+authors = ["Flowrey <flowrey@laposte.net>"]
 license = "GPL-3.0"
 readme = "README.md"
 packages = [{include = "youtube_bz"}]
