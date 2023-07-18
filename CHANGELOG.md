@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.3.4] - 2023-07-18
 ### Changed
 - Use poetry with pyproject.toml instead of old setup.py
 - Add pyright stub
@@ -36,7 +38,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Refactoring of all code
 
-[Unreleased]: https://github.com/flowrey/youtube-bz/releases/tag/v0.3.3...HEAD
+[Unreleased]: https://github.com/flowrey/youtube-bz/releases/tag/v0.3.4...HEAD
+[0.3.4]: https://github.com/flowrey/youtube-bz/releases/tag/v0.3.4
 [0.3.3]: https://github.com/flowrey/youtube-bz/releases/tag/v0.3.3
 [0.3.2]: https://github.com/flowrey/youtube-bz/releases/tag/v0.3.2
 [0.3.1]: https://github.com/flowrey/youtube-bz/releases/tag/v0.3.1
