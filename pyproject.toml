@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "youtube-bz"
-version = "0.3.3"
+version = "0.3.4"
 description = "YoutubeBrainz allow you to find and download Youtube Videos associated to an Album on MusicBrainz."
 authors = ["Flowrey <flowrey at laposte.net>"]
 license = "GPL-3.0"
