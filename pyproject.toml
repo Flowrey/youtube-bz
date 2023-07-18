@@ -33,3 +33,6 @@ stubPath = "typings"
 venvPath = ".venv"
 typeCheckingMode = "strict"
 exclude = [".venv", "typings"]
+
+[tool.poetry.scripts]
+youtube-bz = { callable = "youtube_bz:main" }
