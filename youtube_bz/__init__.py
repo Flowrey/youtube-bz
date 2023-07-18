@@ -47,6 +47,7 @@ async def get_best_match(release: Release, track: Track):
         A dict containing the video title and id, matching the track title.
 
     """
+    await asyncio.sleep(1)
     search_query = youtube.get_search_query(release, track)
     search_results = await youtube.get_search_results(search_query)
     yt_initial_data = youtube.get_intital_data(search_results)

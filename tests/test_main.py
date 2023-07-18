@@ -1,7 +1,10 @@
+from unittest.mock import patch
 import youtube_bz
 from youtube_bz.musicbrainz import Release, Track, ArtistCredit
-
+from pytube import YouTube
 from unittest import IsolatedAsyncioTestCase
+from youtube_bz import download
+import vcr  # type: ignore
 
 mbid_list = [
     "a17a48b6-51db-3c52-8fdd-066fb9989f78",
@@ -30,3 +33,12 @@ class TestYoutubeBrainz(IsolatedAsyncioTestCase):
         track = Track(title="MANTRA", position="2")  # type: ignore
         search_query = youtube_bz.youtube.get_search_query(release, track)
         assert search_query == '"Bring Me The Horizon" "MANTRA" "Auto-generated"'
+
+    @patch("pytube.YouTube", autospec=YouTube)
+    async def test_download(self, youtube: YouTube):
+        download("AmEN!", "2TjcPpasesA")
+
+    @patch("pytube.YouTube", autospec=YouTube)
+    @vcr.use_cassette("fixtures/vcr_cassettes/youtube_bz.yaml")  # type: ignore
+    def test_main(self, youtube: YouTube):
+        youtube_bz.main(["6c1adf00-edaf-4fe0-9d57-8dc5da90a4a9"])
