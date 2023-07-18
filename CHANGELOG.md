@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use poetry with pyproject.toml instead of old setup.py
 - Add pyright stub
 - Add black and pyright to github action
-### Fixed
+### Fixed
 - Fix bug when requestion MusicBrainz without User-Agent heade
 
 ## [0.3.3] - 2022-05-31
