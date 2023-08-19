@@ -1,8 +1,10 @@
 import json
 from unittest import IsolatedAsyncioTestCase
-from aiohttp import ClientSession
-from youtube_bz.musicbrainz import Release
 from unittest.mock import patch
+
+from aiohttp import ClientSession
+
+from youtube_bz.musicbrainz import Release
 
 
 class MockResponse:

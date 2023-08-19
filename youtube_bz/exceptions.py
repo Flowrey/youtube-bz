@@ -1,2 +1,3 @@
-class FailedToParseYtIntialData(Exception):
-    """Raised when the yt_initial_data can't be find"""
+class YouTubeBrainzError(Exception):
+    def __init__(self, message: str):
+        super().__init__(message)

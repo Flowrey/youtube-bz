@@ -1,6 +1,7 @@
 from unittest import IsolatedAsyncioTestCase
-from youtube_bz.youtube import get_intital_data
+
 from youtube_bz.exceptions import FailedToParseYtIntialData
+from youtube_bz.youtube import get_intital_data
 
 
 class TestYoutube(IsolatedAsyncioTestCase):

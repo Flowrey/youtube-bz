@@ -1,10 +1,12 @@
-from unittest.mock import patch
-import youtube_bz
-from youtube_bz.musicbrainz import Release, Track, ArtistCredit
-from pytube import YouTube
 from unittest import IsolatedAsyncioTestCase
-from youtube_bz import download
+from unittest.mock import patch
+
 import vcr  # type: ignore
+from pytube import YouTube
+
+import youtube_bz
+from youtube_bz import download
+from youtube_bz.musicbrainz import ArtistCredit, Release, Track
 
 mbid_list = [
     "a17a48b6-51db-3c52-8fdd-066fb9989f78",
