@@ -1,3 +1,11 @@
+---
+name: "\U0001F41B Bug report"
+about: Report a bug or unexpected behavior while using youtube-bz
+title: ''
+labels: bug
+assignees: ''
+---
+
 ### Checklist
 
 <!-- Please test the latest versions, that will remove the possibility that you see a bug that is fixed in a newer version. -->
