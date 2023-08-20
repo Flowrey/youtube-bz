@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0] - 2023-08-20
+### Added
+- A `--version` flag
+- A `--verbose` flag
+### Changed
+- Use `download` subcommand instead of using a direct command
+### Removed
+- Remove the `pyright` dependency
+
 ## [0.3.4] - 2023-07-18
 ### Changed
 - Use poetry with pyproject.toml instead of old setup.py

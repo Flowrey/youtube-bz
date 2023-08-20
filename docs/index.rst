@@ -75,7 +75,7 @@ Downloading the release is really straight forward:
 
 .. code-block:: console
 
-        $ youtube-bz 5fc6445c-05ce-34e7-ab31-63bf7d3a9f24
+        $ youtube-bz download 5fc6445c-05ce-34e7-ab31-63bf7d3a9f24
 
 Your download should start now and you will get the YouTube videos
 associated to the MBID album.
