@@ -11,7 +11,7 @@ from youtube_bz.commands.download import download, download_video_audio, get_bes
 
 @pytest.mark.asyncio
 @patch("youtube_bz.commands.download.YouTubeAPI.Client.get_search_results")
-async def test_get_no_best_match(mock_search_results):
+async def test_get_no_best_match(mock_search_results):  # type: ignore
     yt_initial_data = json.dumps(
         {
             "contents": {
@@ -41,7 +41,7 @@ async def test_get_no_best_match(mock_search_results):
 
 @pytest.mark.asyncio
 @patch("youtube_bz.commands.download.YouTubeAPI.Client.get_search_results")
-async def test_get_best_match(mock_search_results):
+async def test_get_best_match(mock_search_results):  # type: ignore
     yt_initial_data = json.dumps(
         {
             "contents": {
@@ -86,7 +86,7 @@ async def test_get_best_match(mock_search_results):
 
 @pytest.mark.asyncio
 @patch("youtube_bz.commands.download.YouTubeAPI.Client.get_search_results")
-async def test_fail_get_best_match(mock_search_results):
+async def test_fail_get_best_match(mock_search_results):  # type: ignore
     mock_search_results.side_effect = aiohttp.ClientError()
     artist_credit: ArtistCredit = {"name": "foo"}
     track: Track = {"title": "foo", "position": 1}
@@ -109,7 +109,7 @@ def test_download_video_audio(*_):
 @patch("youtube_bz.commands.download.pytube.YouTube", autospec=pytube.YouTube)
 @patch("youtube_bz.commands.download.MusicBrainzAPI.Client.lookup_release")
 @patch("youtube_bz.commands.download.YouTubeAPI.Client.get_search_results")
-async def test_download(mock_search_results, mock_lookup_release, *_):
+async def test_download(mock_search_results, mock_lookup_release, *_):  # type: ignore
     yt_initial_data = json.dumps(
         {
             "contents": {

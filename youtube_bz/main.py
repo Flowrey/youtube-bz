@@ -1,17 +1,17 @@
 import argparse
 import asyncio
+import importlib.metadata
 import logging
 import sys
 
 from youtube_bz import commands
 from youtube_bz.exceptions import YouTubeBrainzError
-from youtube_bz.version import __version__
 
 logger = logging.getLogger(__name__)
 
 
 def print_version() -> None:
-    print(__version__)
+    print(importlib.metadata.version("youtube-bz"))
 
 
 async def run_command(args: argparse.Namespace):

@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "youtube-bz"
+version = "0.3.4"
 description = "YoutubeBrainz allow you to find and download Youtube Videos associated to an Album on MusicBrainz."
 authors = ["Flowrey <flowrey@laposte.net>"]
 license = "GPL-3.0"
 readme = "README.md"
 packages = [{include = "youtube_bz"}]
-dynamic = ["version"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -14,7 +14,6 @@ aiohttp = "^3.8.4"
 
 
 [tool.poetry.group.dev.dependencies]
-aioresponses = "^0.7.4"
 black = "^23.7.0"
 coverage = "^7.2.7"
 isort = "^5.12.0"
