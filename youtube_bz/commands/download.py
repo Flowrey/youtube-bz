@@ -1,20 +1,27 @@
 import asyncio
 import typing
 
+import aiohttp
 import pytube
 
 from youtube_bz.api import musicbrainz as MusicBrainzAPI
 from youtube_bz.api import youtube as YouTubeAPI
+from youtube_bz.exceptions import YouTubeBrainzError
 from youtube_bz.utils.levenshtein_distance import levenshtein_distance
 
 
 async def get_best_match(release: MusicBrainzAPI.Release, track: MusicBrainzAPI.Track):
     """Get YouTube video corresponding to MusicBrainz track."""
-    youtube_client = await YouTubeAPI.Client.new()
     search_query = generate_search_query(release, track)
-    search_results = await youtube_client.get_search_results(search_query)
-    yt_initial_data = YouTubeAPI.get_intital_data(search_results)
-    await youtube_client.close()
+
+    youtube_client = await YouTubeAPI.Client.new()
+    try:
+        search_results = await youtube_client.get_search_results(search_query)
+    except aiohttp.ClientError:
+        raise
+    finally:
+        await youtube_client.close()
+    yt_initial_data = YouTubeAPI.get_initial_data(search_results)
 
     contents = (
         itemSectionRenderer["videoRenderer"]
@@ -64,11 +71,20 @@ def generate_search_query(
     )
 
 
-async def download(mbid: str):
+async def download(mbid: str, verbose: bool):
     # Get release info from MusicBrainz
     musicbrainz_client = await MusicBrainzAPI.Client.new()
-    release = await musicbrainz_client.lookup_release(mbid)
-    await musicbrainz_client.close()
+
+    try:
+        release = await musicbrainz_client.lookup_release(mbid)
+    except aiohttp.ClientResponseError as e:
+        raise YouTubeBrainzError(
+            f"Failed to get musicbrainz release: {e.status}, {e.message}\nVerify the MBID provided..."
+        )
+    finally:
+        await musicbrainz_client.close()
+
+    # Search for the corresping video asynchronously
     results = await asyncio.gather(
         *[get_best_match(release, track) for track in release["media"][0]["tracks"]]
     )
