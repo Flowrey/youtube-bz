@@ -1,3 +1,3 @@
-from .api import Client, Release, ArtistCredit, Track, Media
+from .api import ArtistCredit, Client, Media, Release, Track
 
 __all__ = ["Client", "Release", "ArtistCredit", "Track", "Media"]
