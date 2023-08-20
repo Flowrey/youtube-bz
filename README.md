@@ -49,7 +49,7 @@ $ youtube-bz --help
 
 You can search for an album with its MBID (see https://musicbrainz.org/doc/MusicBrainz_Identifier)
 ```
-$  youtube-bz MBID
+$  youtube-bz download MBID
 ```
 
 ## Author
