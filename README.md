@@ -64,4 +64,4 @@ details
 
 ## Acknowledgments
 
-  - This project's structure has been greatly inspired by youtube-dl
+  - This project's structure has been greatly inspired by [pipx](https://github.com/pypa/pipx/)
