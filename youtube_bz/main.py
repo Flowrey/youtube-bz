@@ -16,14 +16,13 @@ def print_version() -> None:
 
 async def run_command(args: argparse.Namespace):
     verbose = args.verbose if "verbose" in args else False
-    match args.command:
-        case "download":
-            await commands.download(
-                args.mbid,
-                verbose,
-            )
-        case _:
-            print(f"Unknown command {args.command}")
+    if args.command == "download":
+        await commands.download(
+            args.mbid,
+            verbose,
+        )
+    else:
+        print(f"Unknown command {args.command}")
 
 
 def get_command_parser() -> argparse.ArgumentParser:
