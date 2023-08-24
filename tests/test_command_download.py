@@ -10,7 +10,7 @@ from youtube_bz.commands.download import download, download_video_audio, get_bes
 
 
 @pytest.mark.asyncio
-@patch("youtube_bz.commands.download.YouTubeAPI.Client.get_search_results")
+@patch("youtube_bz.api.youtube.Client.get_search_results")
 async def test_get_no_best_match(mock_search_results):  # type: ignore
     yt_initial_data = json.dumps(
         {
@@ -40,7 +40,7 @@ async def test_get_no_best_match(mock_search_results):  # type: ignore
 
 
 @pytest.mark.asyncio
-@patch("youtube_bz.commands.download.YouTubeAPI.Client.get_search_results")
+@patch("youtube_bz.api.youtube.Client.get_search_results")
 async def test_get_best_match(mock_search_results):  # type: ignore
     yt_initial_data = json.dumps(
         {
@@ -85,7 +85,7 @@ async def test_get_best_match(mock_search_results):  # type: ignore
 
 
 @pytest.mark.asyncio
-@patch("youtube_bz.commands.download.YouTubeAPI.Client.get_search_results")
+@patch("youtube_bz.api.youtube.Client.get_search_results")
 async def test_fail_get_best_match(mock_search_results):  # type: ignore
     mock_search_results.side_effect = aiohttp.ClientError()
     artist_credit: ArtistCredit = {"name": "foo"}
@@ -100,15 +100,15 @@ async def test_fail_get_best_match(mock_search_results):  # type: ignore
         await get_best_match(release, track)
 
 
-@patch("youtube_bz.commands.download.pytube.YouTube", autospec=pytube.YouTube)
+@patch("pytube.YouTube", autospec=pytube.YouTube)
 def test_download_video_audio(*_):
     download_video_audio("AmEN!", "2TjcPpasesA")
 
 
 @pytest.mark.asyncio
-@patch("youtube_bz.commands.download.pytube.YouTube", autospec=pytube.YouTube)
-@patch("youtube_bz.commands.download.MusicBrainzAPI.Client.lookup_release")
-@patch("youtube_bz.commands.download.YouTubeAPI.Client.get_search_results")
+@patch("pytube.YouTube", autospec=pytube.YouTube)
+@patch("youtube_bz.api.musicbrainz.Client.lookup_release")
+@patch("youtube_bz.api.youtube.Client.get_search_results")
 async def test_download(mock_search_results, mock_lookup_release, *_):  # type: ignore
     yt_initial_data = json.dumps(
         {
