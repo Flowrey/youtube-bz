@@ -4,15 +4,21 @@ from aiohttp import ClientSession
 
 
 class ArtistCredit(TypedDict):
+    """A MusicBrainz ArtistCredit."""
+
     name: str
 
 
 class Track(TypedDict):
+    """A MusicBrainz Track."""
+
     title: str
     position: int
 
 
 class Media(TypedDict):
+    """A MusicBrainz Media."""
+
     tracks: list[Track]
 
 
@@ -22,11 +28,13 @@ Release = TypedDict(
 
 
 class Client:
-    _host: str
+    """MusicBrainz API client."""
+
     _session: ClientSession
 
     @classmethod
     async def new(cls, host: str = "https://musicbrainz.org"):
+        """Create a new MusicBrainz client."""
         self = cls()
         self._session = ClientSession(
             base_url=host,
@@ -44,7 +52,9 @@ class Client:
             return await response.json()
 
     async def lookup_release(self, mbid: str) -> Release:
+        """Lookup for a release with it's MBID."""
         return cast(Release, await self._lookup("release", mbid))
 
     async def close(self) -> None:
+        """Close client session."""
         await self._session.close()

@@ -8,11 +8,13 @@ from .exceptions import FailedToParseIntialData
 
 
 class Client:
-    _host: str
+    """YouTube API client."""
+
     _session: ClientSession
 
     @classmethod
     async def new(cls, host: str = "https://www.youtube.com"):
+        """Create a new YouTube client."""
         self = cls()
         self._session = ClientSession(base_url=host, raise_for_status=True)
 
@@ -26,6 +28,7 @@ class Client:
             return await response.text()
 
     async def close(self) -> None:
+        """Close client session."""
         await self._session.close()
 
 
