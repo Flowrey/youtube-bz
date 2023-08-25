@@ -1,5 +1,4 @@
 import asyncio
-import typing
 
 import aiohttp
 import pytube
@@ -54,11 +53,10 @@ async def get_best_match(release: MusicBrainzAPI.Release, track: MusicBrainzAPI.
 def download_video_audio(title: str, video_id: str):
     """Download audio of a YouTube video."""
     print("[Downloading] {} : {}".format(title, video_id))
-    query = pytube.YouTube(f"http://youtube.com/watch?v={video_id}").streams.filter(
-        only_audio=True
-    )
-    stream: pytube.Stream = typing.cast(pytube.Stream, query[-1])
-    stream.download()
+    if stream := pytube.YouTube(
+        f"http://youtube.com/watch?v={video_id}"
+    ).streams.get_audio_only():
+        stream.download()
     print("[Downloaded] {}".format(title))
 
 
