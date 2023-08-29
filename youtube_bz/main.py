@@ -43,6 +43,8 @@ def get_command_parser() -> argparse.ArgumentParser:
     download_parser.add_argument("mbid", help="music brainz identifer of a release")
     download_parser.add_argument("--verbose", action="store_true")
 
+    download_parser.add_argument("--destination", help="Path to the output directory")
+
     parser.add_argument("--version", action="store_true", help="Print version and exit")
 
     return parser
