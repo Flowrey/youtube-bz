@@ -8,6 +8,8 @@ from youtube_bz.api import youtube as YouTubeAPI
 from youtube_bz.exceptions import YouTubeBrainzError
 from youtube_bz.utils.levenshtein_distance import levenshtein_distance
 
+from typing import Optional
+
 
 async def get_best_match(release: MusicBrainzAPI.Release, track: MusicBrainzAPI.Track):
     """Get YouTube video corresponding to MusicBrainz track."""
@@ -50,13 +52,13 @@ async def get_best_match(release: MusicBrainzAPI.Release, track: MusicBrainzAPI.
     return None
 
 
-def download_video_audio(title: str, video_id: str):
+def download_video_audio(title: str, video_id: str, destination: Optional[str] = None):
     """Download audio of a YouTube video."""
     print("[Downloading] {} : {}".format(title, video_id))
     if stream := pytube.YouTube(
         f"http://youtube.com/watch?v={video_id}"
     ).streams.get_audio_only():
-        stream.download()
+        stream.download(output_path=destination)
     print("[Downloaded] {}".format(title))
 
 
@@ -69,7 +71,7 @@ def generate_search_query(
     )
 
 
-async def download(mbid: str, verbose: bool):
+async def download(mbid: str, verbose: bool, destination: Optional[str] = None):
     # Get release info from MusicBrainz
     musicbrainz_client = await MusicBrainzAPI.Client.new()
 
@@ -92,5 +94,5 @@ async def download(mbid: str, verbose: bool):
         if result:
             loop = asyncio.get_running_loop()
             loop.run_in_executor(
-                None, download_video_audio, result["title"], result["id"]
+                None, download_video_audio, result["title"], result["id"], destination
             )

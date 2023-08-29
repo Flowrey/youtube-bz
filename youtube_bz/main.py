@@ -20,6 +20,7 @@ async def run_command(args: argparse.Namespace):
         await commands.download(
             args.mbid,
             verbose,
+            destination=args.destination
         )
     else:
         print(f"Unknown command {args.command}")
