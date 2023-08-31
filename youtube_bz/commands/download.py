@@ -1,14 +1,12 @@
 import asyncio
+from typing import Optional
 
 import aiohttp
 import pytube
-
 from youtube_bz.api import musicbrainz as MusicBrainzAPI
 from youtube_bz.api import youtube as YouTubeAPI
 from youtube_bz.exceptions import YouTubeBrainzError
 from youtube_bz.utils.levenshtein_distance import levenshtein_distance
-
-from typing import Optional
 
 
 async def get_best_match(release: MusicBrainzAPI.Release, track: MusicBrainzAPI.Track):

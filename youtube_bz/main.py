@@ -17,11 +17,7 @@ def print_version() -> None:
 async def run_command(args: argparse.Namespace):
     verbose = args.verbose if "verbose" in args else False
     if args.command == "download":
-        await commands.download(
-            args.mbid,
-            verbose,
-            args.destination
-        )
+        await commands.download(args.mbid, verbose, args.destination)
     else:
         print(f"Unknown command {args.command}")
 
@@ -44,7 +40,9 @@ def get_command_parser() -> argparse.ArgumentParser:
     download_parser.add_argument("mbid", help="music brainz identifer of a release")
     download_parser.add_argument("--verbose", action="store_true")
 
-    download_parser.add_argument("-d", "--destination", help="Path to the output directory")
+    download_parser.add_argument(
+        "-d", "--destination", help="Path to the output directory"
+    )
 
     parser.add_argument("--version", action="store_true", help="Print version and exit")
 
