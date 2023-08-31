@@ -3,6 +3,7 @@ from typing import Optional
 
 import aiohttp
 import pytube
+
 from youtube_bz.api import musicbrainz as MusicBrainzAPI
 from youtube_bz.api import youtube as YouTubeAPI
 from youtube_bz.exceptions import YouTubeBrainzError
