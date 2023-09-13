@@ -9,6 +9,8 @@ from youtube_bz.api import youtube as YouTubeAPI
 from youtube_bz.exceptions import YouTubeBrainzError
 from youtube_bz.utils.levenshtein_distance import levenshtein_distance
 
+from tqdm.asyncio import tqdm
+
 
 async def get_best_match(release: MusicBrainzAPI.Release, track: MusicBrainzAPI.Track):
     """Get YouTube video corresponding to MusicBrainz track."""
@@ -88,10 +90,17 @@ async def download(mbid: str, verbose: bool, destination: Optional[str] = None):
         *[get_best_match(release, track) for track in release["media"][0]["tracks"]]
     )
 
+
+
+    loop = asyncio.get_running_loop()
+
     # Run download in thread pool to avoid blocking IO
+    tasks = []
     for result in results:
         if result:
-            loop = asyncio.get_running_loop()
-            loop.run_in_executor(
+            tasks.append(loop.run_in_executor(
                 None, download_video_audio, result["title"], result["id"], destination
-            )
+            ))
+
+    for f in tqdm.as_completed(tasks):
+        await f
