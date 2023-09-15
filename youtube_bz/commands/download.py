@@ -1,9 +1,10 @@
 import asyncio
-from typing import Optional
+from typing import Any, Optional
 
 import aiohttp
 import pytube
 from tqdm.asyncio import tqdm
+from typing import List
 
 from youtube_bz.api import musicbrainz as MusicBrainzAPI
 from youtube_bz.api import youtube as YouTubeAPI
@@ -90,7 +91,7 @@ async def download(mbid: str, verbose: bool, destination: Optional[str] = None):
     loop = asyncio.get_running_loop()
 
     # Run download in thread pool to avoid blocking IO
-    tasks = []
+    tasks: List[asyncio.Future[Any]] = []
     for result in results:
         if result:
             tasks.append(
