@@ -1,10 +1,9 @@
 import asyncio
-from typing import Any, Optional
+from typing import Any, List, Optional
 
 import aiohttp
 import pytube
 from tqdm.asyncio import tqdm
-from typing import List
 
 from youtube_bz.api import musicbrainz as MusicBrainzAPI
 from youtube_bz.api import youtube as YouTubeAPI
