@@ -1,8 +1,9 @@
 import asyncio
-from typing import Optional
+from typing import Any, List, Optional
 
 import aiohttp
 import pytube
+from tqdm.asyncio import tqdm
 
 from youtube_bz.api import musicbrainz as MusicBrainzAPI
 from youtube_bz.api import youtube as YouTubeAPI
@@ -53,12 +54,10 @@ async def get_best_match(release: MusicBrainzAPI.Release, track: MusicBrainzAPI.
 
 def download_video_audio(title: str, video_id: str, destination: Optional[str] = None):
     """Download audio of a YouTube video."""
-    print("[Downloading] {} : {}".format(title, video_id))
     if stream := pytube.YouTube(
         f"http://youtube.com/watch?v={video_id}"
     ).streams.get_audio_only():
         stream.download(output_path=destination)
-    print("[Downloaded] {}".format(title))
 
 
 def generate_search_query(
@@ -88,10 +87,21 @@ async def download(mbid: str, verbose: bool, destination: Optional[str] = None):
         *[get_best_match(release, track) for track in release["media"][0]["tracks"]]
     )
 
+    loop = asyncio.get_running_loop()
+
     # Run download in thread pool to avoid blocking IO
+    tasks: List[asyncio.Future[Any]] = []
     for result in results:
         if result:
-            loop = asyncio.get_running_loop()
-            loop.run_in_executor(
-                None, download_video_audio, result["title"], result["id"], destination
+            tasks.append(
+                loop.run_in_executor(
+                    None,
+                    download_video_audio,
+                    result["title"],
+                    result["id"],
+                    destination,
+                )
             )
+
+    for f in tqdm.as_completed(tasks):
+        await f
