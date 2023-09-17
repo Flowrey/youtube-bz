@@ -1,4 +1,4 @@
-from typing import Any, TypedDict, cast
+from typing import Any, TypedDict, cast, Optional
 
 from aiohttp import ClientSession
 
@@ -23,8 +23,19 @@ class Media(TypedDict):
 
 
 Release = TypedDict(
-    "Release", {"artist-credit": list[ArtistCredit], "media": list[Media], "title": str}
+    "Release",
+    {
+        "artist-credit": list[ArtistCredit],
+        "media": list[Media],
+        "title": str,
+        "score": int,
+        "id": str,
+    },
 )
+
+
+class SearchResult(TypedDict):
+    releases: list[Release]
 
 
 class Client:
@@ -50,6 +61,23 @@ class Client:
             params={"inc": "artists+recordings", "fmt": "json"},
         ) as response:
             return await response.json()
+
+    async def _search(self, entity_type: str, query: str) -> dict[str, Any]:
+        async with self._session.get(
+            f"/ws/2/{entity_type}",
+            params={"fmt": "json", "query": query},
+        ) as response:
+            return await response.json()
+
+    async def search_release(
+        self, query: str, artist: Optional[str], artistname: Optional[str]
+    ) -> SearchResult:
+        """Lookup for a release with it's MBID."""
+        if artist:
+            query += " AND artist=" + artist
+        if artistname:
+            query += " AND artistname=" + artistname
+        return cast(SearchResult, await self._search("release", query))
 
     async def lookup_release(self, mbid: str) -> Release:
         """Lookup for a release with it's MBID."""

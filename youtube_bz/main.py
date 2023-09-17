@@ -18,6 +18,10 @@ async def run_command(args: argparse.Namespace):
     verbose = args.verbose if "verbose" in args else False
     if args.command == "download":
         await commands.download(args.mbid, verbose, args.destination)
+    elif args.command == "search":
+        await commands.search(
+            args.query, verbose, artistname=args.artistname, artist=args.artist
+        )
     else:
         print(f"Unknown command {args.command}")
 
@@ -32,6 +36,7 @@ def get_command_parser() -> argparse.ArgumentParser:
         description="Get help for commands with youtube-bz COMMAND --help",
     )
 
+    # download parser
     download_parser = subparsers.add_parser(
         "download",
         help="Download a release",
@@ -44,6 +49,22 @@ def get_command_parser() -> argparse.ArgumentParser:
         "-d", "--destination", help="Path to the output directory"
     )
 
+    # search parser
+    search_parser = subparsers.add_parser(
+        "search",
+        help="Search a release",
+        description="Find a release on MusicBrainz.",
+    )
+    search_parser.add_argument("query", help="Lucene search query")
+    search_parser.add_argument(
+        "--artist",
+        help='(part of) the combined credited artist name for the release, including join phrases (e.g. "Artist X feat.")',
+    )
+    search_parser.add_argument(
+        "--artistname", help="(part of) the name of any of the release artists "
+    )
+
+    # main parser
     parser.add_argument("--version", action="store_true", help="Print version and exit")
 
     return parser
