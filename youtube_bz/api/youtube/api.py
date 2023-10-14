@@ -1,8 +1,8 @@
 import json
 import re
+import urllib.parse
+import urllib.request
 from typing import Any
-
-from aiohttp import ClientSession
 
 from .exceptions import FailedToParseIntialData
 
@@ -10,26 +10,19 @@ from .exceptions import FailedToParseIntialData
 class Client:
     """YouTube API client."""
 
-    _session: ClientSession
+    _base: str
 
-    @classmethod
-    async def new(cls, host: str = "https://www.youtube.com"):
-        """Create a new YouTube client."""
-        self = cls()
-        self._session = ClientSession(base_url=host, raise_for_status=True)
+    def __init__(self, base: str = "https://youtube.com"):
+        self._base = base
 
-        return self
-
-    async def get_search_results(self, search_query: str) -> str:
+    def get_search_results(self, search_query: str) -> str:
         """Get YouTube search results."""
-        async with self._session.get(
-            "/results", params={"search_query": search_query}
-        ) as response:
-            return await response.text()
-
-    async def close(self) -> None:
-        """Close client session."""
-        await self._session.close()
+        url = urllib.parse.urljoin(
+            self._base, f"/results?search_query={urllib.parse.quote(search_query)}"
+        )
+        with urllib.request.urlopen(url) as response:
+            html = response.read().decode(response.headers.get_content_charset())
+        return html
 
 
 def get_initial_data(search_results: str) -> dict[str, Any]:

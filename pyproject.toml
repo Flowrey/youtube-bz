@@ -1,45 +1,22 @@
-[tool.poetry]
+[build-system]
+requires = ["hatchling>=0.15.0"]
+build-backend = "hatchling.build"
+
+[project]
 name = "youtube-bz"
 version = "0.4.1"
 description = "YoutubeBrainz allow you to find and download Youtube Videos associated to an Album on MusicBrainz."
-authors = ["Flowrey <flowrey@laposte.net>"]
+authors = [{ name = "Flowrey", email = "flowrey@laposte.net" }]
 license = "GPL-3.0"
 readme = "README.md"
 packages = [{include = "youtube_bz"}]
+dependencies = [
+    "pytube>=15.0.0",
+    "tqdm>=4.66.1"
+]
 
-[tool.poetry.dependencies]
-python = "^3.9"
-pytube = "^15.0.0"
-aiohttp = "^3.8.4"
-tqdm = "^4.66.1"
+[project.scripts]
+youtube-bz = "youtube_bz.main:cli"
 
-
-[tool.poetry.group.dev.dependencies]
-black = "^23.7.0"
-coverage = "^7.2.7"
-isort = "^5.12.0"
-pytest = "^7.4.0"
-pytest-asyncio = "^0.21.1"
-pytest-cov = "^4.1.0"
-
-[tool.poetry.group.docs]
-optional = true
-
-[tool.poetry.group.docs.dependencies]
-sphinx = "^7.0.1"
-sphinx-rtd-theme = "^1.3.0"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.pyright]
-stubPath = "typings"
-venvPath = ".venv"
-reportMissingTypeStubs = false
-typeCheckingMode = "strict"
-include = ["youtube_bz"]
-exclude = [".venv", "typings"]
-
-[tool.poetry.scripts]
-youtube-bz = { callable = "youtube_bz.main:cli" }
+[tool.mypy]
+ignore_missing_imports = true

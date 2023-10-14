@@ -23,10 +23,9 @@ def test_verbose(capsys):  # type: ignore
     cli(["download", "mbid", "--verbose"])
 
 
-@pytest.mark.asyncio
-async def test_run_unk_cmd(capsys):  # type: ignore
+def test_run_unk_cmd(capsys):  # type: ignore
     ns = Namespace(command="foo")
-    await run_command(ns)
+    run_command(ns)
     captured = capsys.readouterr()  # type: ignore
     assert captured.out.strip() == "Unknown command foo"  # type: ignore
 

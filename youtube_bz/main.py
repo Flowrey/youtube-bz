@@ -1,5 +1,4 @@
 import argparse
-import asyncio
 import importlib.metadata
 import logging
 import sys
@@ -14,10 +13,10 @@ def print_version() -> None:
     print(importlib.metadata.version("youtube-bz"))
 
 
-async def run_command(args: argparse.Namespace):
+def run_command(args: argparse.Namespace):
     verbose = args.verbose if "verbose" in args else False
     if args.command == "download":
-        await commands.download(args.mbid, verbose, args.destination)
+        commands.download(args.mbid, verbose, args.destination)
     else:
         print(f"Unknown command {args.command}")
 
@@ -71,7 +70,7 @@ def cli(args: list[str] = sys.argv[1:]):
         if not parsed_args.command:
             parser.print_help()
             return 1
-        asyncio.run(run_command(parsed_args))
+        run_command(parsed_args)
     except YouTubeBrainzError as e:
         print(str(e), file=sys.stderr)
         logger.debug(f"YouTubeBrainzError: {e}", exc_info=True)

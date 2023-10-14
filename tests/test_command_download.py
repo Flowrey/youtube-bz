@@ -1,7 +1,7 @@
 import json
 from unittest.mock import patch
+from urllib.error import HTTPError, URLError
 
-import aiohttp
 import pytest
 import pytube
 
@@ -9,9 +9,8 @@ from youtube_bz.api.musicbrainz import ArtistCredit, Media, Release, Track
 from youtube_bz.commands.download import download, download_video_audio, get_best_match
 
 
-@pytest.mark.asyncio
 @patch("youtube_bz.api.youtube.Client.get_search_results")
-async def test_get_no_best_match(mock_search_results):  # type: ignore
+def test_get_no_best_match(mock_search_results):  # type: ignore
     yt_initial_data = json.dumps(
         {
             "contents": {
@@ -36,12 +35,11 @@ async def test_get_no_best_match(mock_search_results):  # type: ignore
         "media": [media],
         "title": "bar",
     }
-    await get_best_match(release, track)
+    get_best_match(release, track)
 
 
-@pytest.mark.asyncio
 @patch("youtube_bz.api.youtube.Client.get_search_results")
-async def test_get_best_match(mock_search_results):  # type: ignore
+def test_get_best_match(mock_search_results):  # type: ignore
     yt_initial_data = json.dumps(
         {
             "contents": {
@@ -81,13 +79,12 @@ async def test_get_best_match(mock_search_results):  # type: ignore
         "media": [media],
         "title": "bar",
     }
-    await get_best_match(release, track)
+    get_best_match(release, track)
 
 
-@pytest.mark.asyncio
 @patch("youtube_bz.api.youtube.Client.get_search_results")
-async def test_fail_get_best_match(mock_search_results):  # type: ignore
-    mock_search_results.side_effect = aiohttp.ClientError()
+def test_fail_get_best_match_with_urlerror(mock_search_results):  # type: ignore
+    mock_search_results.side_effect = URLError(reason="foo")
     artist_credit: ArtistCredit = {"name": "foo"}
     track: Track = {"title": "foo", "position": 1}
     media: Media = {"tracks": [track]}
@@ -96,8 +93,25 @@ async def test_fail_get_best_match(mock_search_results):  # type: ignore
         "media": [media],
         "title": "bar",
     }
-    with pytest.raises(aiohttp.ClientError):
-        await get_best_match(release, track)
+    with pytest.raises(URLError):
+        get_best_match(release, track)
+
+
+@patch("youtube_bz.api.youtube.Client.get_search_results")
+def test_fail_get_best_match_with_httperror(mock_search_results):
+    mock_search_results.side_effect = HTTPError(
+        url="foo", hdrs="", fp=None, code=500, msg="foo"  # type: ignore
+    )
+    artist_credit: ArtistCredit = {"name": "foo"}
+    track: Track = {"title": "foo", "position": 1}
+    media: Media = {"tracks": [track]}
+    release: Release = {
+        "artist-credit": [artist_credit],
+        "media": [media],
+        "title": "bar",
+    }
+    with pytest.raises(HTTPError):
+        get_best_match(release, track)
 
 
 @patch("pytube.YouTube", autospec=pytube.YouTube)
@@ -105,11 +119,10 @@ def test_download_video_audio(*_):
     download_video_audio("AmEN!", "2TjcPpasesA")
 
 
-@pytest.mark.asyncio
 @patch("pytube.YouTube", autospec=pytube.YouTube)
 @patch("youtube_bz.api.musicbrainz.Client.lookup_release")
 @patch("youtube_bz.api.youtube.Client.get_search_results")
-async def test_download(mock_search_results, mock_lookup_release, *_):  # type: ignore
+def test_download(mock_search_results, mock_lookup_release, *_):  # type: ignore
     yt_initial_data = json.dumps(
         {
             "contents": {
@@ -152,4 +165,4 @@ async def test_download(mock_search_results, mock_lookup_release, *_):  # type: 
     }
     mock_lookup_release.return_value = release
 
-    await download("", False)
+    download("", False)
