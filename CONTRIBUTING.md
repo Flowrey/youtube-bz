@@ -7,7 +7,7 @@
 Prerequisites:
 
 - Python 3.9+
-- [Poetry](https://python-poetry.org/)
+- [Nox](https://nox.thea.codes/en/stable/)
 
 Install the dependencies with `poetry install --with dev`
 
@@ -15,7 +15,7 @@ Install the dependencies with `poetry install --with dev`
 
 We uses [pytest](https://docs.pytest.org/en/7.4.x/) for tests.
 
-Run tests with `poetry run -m pytest`.
+Run tests with `nox -s tests`.
 
 ### Formatting your code
 
@@ -23,8 +23,13 @@ We use [black](https://black.readthedocs.io/en/stable/) and [isort](https://pycq
 
 Format the code with:
 ```
-poetry run -m black ./youtube_bz/ ./tests
-poetry run -m isort ./youtube_bz/ ./tests --profile=black
+black ./youtube_bz/ ./tests
+isort ./youtube_bz/ ./tests --profile=black
+```
+
+You can check the formatting with nox
+```
+nox -s lint
 ```
 
 ## Commit Messages

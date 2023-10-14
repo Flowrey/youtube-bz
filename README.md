@@ -21,7 +21,7 @@ YoutubeBrainz allows you to find and download Youtube videos associated to an al
 
 You can install `youtube-bz` directly from pip, it should install automatically all the dependencies
 ```
-$ sudo pip install youtube-bz
+$ pip install youtube-bz
 ```
 
 ## How to use

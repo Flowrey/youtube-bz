@@ -1,6 +1,6 @@
 from pathlib import Path
 
-import nox
+import nox  # type: ignore
 
 
 @nox.session
