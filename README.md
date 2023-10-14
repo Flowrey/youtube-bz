@@ -4,7 +4,7 @@ YoutubeBrainz allows you to find and download Youtube videos associated to an al
 
 [![GPL 3.0](https://img.shields.io/badge/license-GPL_3.0-blue.svg)](LICENSE.md)
 [![Coverage Status](https://coveralls.io/repos/github/Flowrey/youtube-bz/badge.svg?branch=master)](https://coveralls.io/github/Flowrey/youtube-bz?branch=master)
-![Coverage Status](https://github.com/flowrey/youtube-bz/actions/workflows/test.yml/badge.svg)
+![Coverage Status](https://github.com/flowrey/youtube-bz/actions/workflows/tests.yml/badge.svg)
 
 
 ## Summary
