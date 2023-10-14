@@ -130,5 +130,9 @@ dmypy.json
 
 # Tests results
 *.mp3
+*.mp4
 *.opus
 *.webm
+*.lcov
+
+.vscode/
