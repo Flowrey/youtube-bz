@@ -166,3 +166,48 @@ def test_download(mock_search_results, mock_lookup_release, *_):  # type: ignore
     mock_lookup_release.return_value = release
 
     download("", False)
+
+
+@patch("pytube.YouTube", autospec=pytube.YouTube)
+@patch("youtube_bz.api.musicbrainz.Client.lookup_release")
+@patch("youtube_bz.api.youtube.Client.get_search_results")
+def test_download_failed(mock_search_results, mock_lookup_release, *_):  # type: ignore
+    yt_initial_data = json.dumps(
+        {
+            "contents": {
+                "twoColumnSearchResultsRenderer": {
+                    "primaryContents": {
+                        "sectionListRenderer": {
+                            "contents": [
+                                {
+                                    "itemSectionRenderer": {
+                                        "contents": [
+                                            {
+                                                "videoRenderer": {
+                                                    "title": {
+                                                        "runs": [{"text": "bar"}]
+                                                    },
+                                                    "videoId": "bar",
+                                                },
+                                            },
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    )
+    artist_credit: ArtistCredit = {"name": "foo"}
+    track: Track = {"title": "foo", "position": 1}
+    media: Media = {"tracks": [track]}
+    release: Release = {
+        "artist-credit": [artist_credit],
+        "media": [media],
+        "title": "bar",
+    }
+    mock_lookup_release.return_value = release
+    mock_search_results.side_effect = ValueError
+    download("", False)

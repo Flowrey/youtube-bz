@@ -4,7 +4,7 @@ from typing import Any, Generator, Optional
 from urllib.error import URLError
 
 import pytube
-from tqdm import tqdm
+from rich.console import Console
 
 from youtube_bz.api import musicbrainz as MusicBrainzAPI
 from youtube_bz.api import youtube as YouTubeAPI
@@ -72,7 +72,7 @@ def get_video_distance(track: Track, contents: Generator[Any, None, None]):
 
 def download_video_audio(title: str, video_id: str, destination: Optional[str] = None):
     if stream := pytube.YouTube(
-        f"http://youtube.com/watch?v={video_id}"
+        f"http://youtube.com/watch?v={video_id}",
     ).streams.get_audio_only():
         stream.download(output_path=destination)
 
@@ -104,12 +104,19 @@ def download(mbid: str, verbose: bool, destination: Optional[str] = None):
             f"Failed to get musicbrainz release: {e.reason}\nVerify the MBID provided..."
         )
 
-    # Search for the corresping video concurrently
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        future = [
-            executor.submit(download_best_match, release, t, destination)
-            for t in release["media"][0]["tracks"]
-        ]
-        with tqdm(total=len(future)) as pbar:
-            for _ in concurrent.futures.as_completed(future):
-                pbar.update(1)
+    console = Console(highlighter=None)
+    with console.status(f'[bold green]Downloading "{release["title"]}"...') as status:
+        # Search for the corresping video concurrently
+        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+            future_to_track = {
+                executor.submit(download_best_match, release, t, destination): t
+                for t in release["media"][0]["tracks"]
+            }
+            for future in concurrent.futures.as_completed(future_to_track):
+                track = future_to_track[future]
+                try:
+                    future.result()
+                except Exception as exc:
+                    console.print(f"[[bold red]Err[/bold red]] {exc}")
+                else:
+                    console.print(f'[[bold green]Ok[/bold green]] {track["title"]}')
