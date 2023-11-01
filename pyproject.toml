@@ -19,5 +19,9 @@ dependencies = [
 youtube-bz = "youtube_bz.main:cli"
 
 [tool.mypy]
+modules = "youtube_bz"
 ignore_missing_imports = true
-check_untyped_def = true
+check_untyped_defs = true
+exclude = [
+    "docs/"
+]
