@@ -20,3 +20,4 @@ youtube-bz = "youtube_bz.main:cli"
 
 [tool.mypy]
 ignore_missing_imports = true
+check_untyped_def = true
