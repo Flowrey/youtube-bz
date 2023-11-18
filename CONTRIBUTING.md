@@ -9,7 +9,7 @@ Prerequisites:
 - Python 3.9+
 - [Nox](https://nox.thea.codes/en/stable/)
 
-Install the dependencies with `poetry install --with dev`
+Install the dependencies with `nox -s develop`
 
 ### Running tests
 
