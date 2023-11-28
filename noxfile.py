@@ -29,7 +29,7 @@ def cover(session):
 def lint(session):
     session.run("python", "-m", "pip", "install", "--upgrade", "pip")
     session.install(*LINT_DEPENDENCIES)
-    files = ["youtube_bz", "tests"] + [str(p) for p in Path(".").glob("*.py")]
+    files = ["src/youtube_bz", "tests"] + [str(p) for p in Path(".").glob("*.py")]
     session.run("black", "--check", *files)
     session.run("isort", "--check", "--profile=black", *files)
     session.run("mypy", "--install-types", "--check-untyped-defs", *files)
