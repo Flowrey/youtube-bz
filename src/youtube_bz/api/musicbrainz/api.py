@@ -1,7 +1,7 @@
 import json
 import urllib.parse
 import urllib.request
-from typing import Any, TypedDict, cast
+from typing import Any, List, Optional, TypedDict, cast
 
 
 class ArtistCredit(TypedDict):
@@ -20,12 +20,16 @@ class Track(TypedDict):
 class Media(TypedDict):
     """A MusicBrainz Media."""
 
-    tracks: list[Track]
+    tracks: List[Track]
 
 
 Release = TypedDict(
-    "Release", {"artist-credit": list[ArtistCredit], "media": list[Media], "title": str}
+    "Release", {"artist-credit": List[ArtistCredit], "media": List[Media], "title": str}
 )
+
+
+class SearchResult(TypedDict):
+    releases: List[Release]
 
 
 class Client:
@@ -38,13 +42,27 @@ class Client:
         self._base = base
 
     def _lookup(self, entity_type: str, mbid: str) -> dict[str, Any]:
-        url = urllib.parse.urljoin(self._base, f"/ws/2/{entity_type}/{mbid}")
-        url += "?inc=artists+recordings&fmt=json"
+        url = f"{self._base}/ws/2/{entity_type}/{mbid}?"
+        url += urllib.parse.urlencode({"inc": "artists+recordings", "fmt": "json"})
         with urllib.request.urlopen(url) as response:
-            html = response.read()
-            data = json.loads(html)
-        return data
+            return json.load(response)
+
+    def _search(self, entity_type: str, query: str) -> dict[str, Any]:
+        url = f"{self._base}/ws/2/{entity_type}?"
+        url += urllib.parse.urlencode({"query": query, "fmt": "json"})
+        with urllib.request.urlopen(url) as response:
+            return json.load(response)
 
     def lookup_release(self, mbid: str) -> Release:
         """Lookup for a release with it's MBID."""
         return cast(Release, self._lookup("release", mbid))
+
+    def search_release(
+        self, query: str, artist: Optional[str] = None, artistname: Optional[str] = None
+    ) -> SearchResult:
+        """Lookup for a release with it's MBID."""
+        if artist:
+            query += " AND artist=" + artist
+        if artistname:
+            query += " AND artistname=" + artistname
+        return cast(SearchResult, self._search("release", query))
