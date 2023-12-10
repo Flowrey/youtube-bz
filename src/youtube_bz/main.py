@@ -17,8 +17,39 @@ def run_command(args: argparse.Namespace):
     verbose = args.verbose if "verbose" in args else False
     if args.command == "download":
         commands.download(args.mbid, verbose, args.destination)
+    elif args.command == "search":
+        commands.search(args.query, verbose, args.artist, args.artistname)
     else:
         print(f"Unknown command {args.command}")
+
+
+def _add_download(subparsers: argparse._SubParsersAction) -> None:
+    p = subparsers.add_parser(
+        "download",
+        help="Download a release",
+        description="Find and download Youtube Videos associated to a release on MusicBrainz.",
+    )
+    p.add_argument("mbid", help="music brainz identifer of a release")
+    p.add_argument("--verbose", action="store_true")
+
+    p.add_argument("-d", "--destination", help="Path to the output directory")
+
+
+def _add_search(subparsers: argparse._SubParsersAction) -> None:
+    p = subparsers.add_parser(
+        "search",
+        help="Search a release",
+        description="Find a release on MusicBrainz.",
+    )
+    p.add_argument("query", help="Lucene search query")
+    p.add_argument("--verbose", action="store_true")
+    p.add_argument(
+        "--artist",
+        help='(part of) the combined credited artist name for the release, including join phrases (e.g. "Artist X feat.")',
+    )
+    p.add_argument(
+        "--artistname", help="(part of) the name of any of the release artists "
+    )
 
 
 def get_command_parser() -> argparse.ArgumentParser:
@@ -30,18 +61,8 @@ def get_command_parser() -> argparse.ArgumentParser:
         dest="command",
         description="Get help for commands with youtube-bz COMMAND --help",
     )
-
-    download_parser = subparsers.add_parser(
-        "download",
-        help="Download a release",
-        description="Find and download Youtube Videos associated to a release on MusicBrainz.",
-    )
-    download_parser.add_argument("mbid", help="music brainz identifer of a release")
-    download_parser.add_argument("--verbose", action="store_true")
-
-    download_parser.add_argument(
-        "-d", "--destination", help="Path to the output directory"
-    )
+    _add_download(subparsers)
+    _add_search(subparsers)
 
     parser.add_argument("--version", action="store_true", help="Print version and exit")
 

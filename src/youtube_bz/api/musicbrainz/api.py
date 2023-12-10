@@ -24,7 +24,14 @@ class Media(TypedDict):
 
 
 Release = TypedDict(
-    "Release", {"artist-credit": List[ArtistCredit], "media": List[Media], "title": str}
+    "Release",
+    {
+        "artist-credit": List[ArtistCredit],
+        "media": List[Media],
+        "title": str,
+        "score": int,
+        "id": str,
+    },
 )
 
 

@@ -34,6 +34,8 @@ def test_get_no_best_match(mock_search_results):  # type: ignore
         "artist-credit": [artist_credit],
         "media": [media],
         "title": "bar",
+        "score": 100,
+        "id": "0000",
     }
     get_best_match(release, track)
 
@@ -78,6 +80,8 @@ def test_get_best_match(mock_search_results):  # type: ignore
         "artist-credit": [artist_credit],
         "media": [media],
         "title": "bar",
+        "score": 100,
+        "id": "0000",
     }
     get_best_match(release, track)
 
@@ -92,6 +96,8 @@ def test_fail_get_best_match_with_urlerror(mock_search_results):  # type: ignore
         "artist-credit": [artist_credit],
         "media": [media],
         "title": "bar",
+        "score": 100,
+        "id": "0000",
     }
     with pytest.raises(URLError):
         get_best_match(release, track)
@@ -109,6 +115,8 @@ def test_fail_get_best_match_with_httperror(mock_search_results):
         "artist-credit": [artist_credit],
         "media": [media],
         "title": "bar",
+        "score": 100,
+        "id": "0000",
     }
     with pytest.raises(HTTPError):
         get_best_match(release, track)
@@ -162,6 +170,8 @@ def test_download(mock_search_results, mock_lookup_release, *_):  # type: ignore
         "artist-credit": [artist_credit],
         "media": [media],
         "title": "bar",
+        "score": 100,
+        "id": "0000",
     }
     mock_lookup_release.return_value = release
 
@@ -207,6 +217,8 @@ def test_download_failed(mock_search_results, mock_lookup_release, *_):  # type:
         "artist-credit": [artist_credit],
         "media": [media],
         "title": "bar",
+        "score": 100,
+        "id": "0000",
     }
     mock_lookup_release.return_value = release
     mock_search_results.side_effect = ValueError
