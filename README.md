@@ -22,7 +22,7 @@ YoutubeBrainz allows you to find and download Youtube videos associated to an al
 ### Installation
 
 You can install `youtube-bz` directly from pip, it should install automatically all the dependencies
-```
+```console
 $ pip install youtube-bz
 ```
 
@@ -33,7 +33,7 @@ $ youtube-bz --help
 ```
 
 You can search for a release with its [MBID](https://musicbrainz.org/doc/MusicBrainz_Identifier) on [MusicBrainz](https://musicbrainz.org/) or
-with the command search for instance to search the album 'Hybrid Theory' of 'Linkin Park' you can run:
+with the command search, for instance to search the album 'Hybrid Theory' of 'Linkin Park' you can run:
 
 ```console
 $ youtube-bz search 'Hybrid Theory' --artist 'Linkin Park'
@@ -47,7 +47,7 @@ $ youtube-bz search 'Hybrid Theory' --artist 'Linkin Park'
 
 And to download it just run:
 ```console
-$ youtube-bz download 2a4174ab-f0b1-430e-b7e2-25c062b45573MBID
+$ youtube-bz download 2a4174ab-f0b1-430e-b7e2-25c062b45573
 ```
 
 ## Author
