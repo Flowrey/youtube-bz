@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "youtube-bz"
-version = "0.4.1"
+version = "0.5.0"
 description = "YoutubeBrainz allow you to find and download Youtube Videos associated to an Album on MusicBrainz."
 authors = [{ name = "Flowrey", email = "flowrey@laposte.net" }]
 license = "GPL-3.0"
