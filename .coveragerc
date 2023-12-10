@@ -1,5 +1,0 @@
-[report]
-
-omit = 
-        __main__.py
-        version.py

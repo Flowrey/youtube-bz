@@ -55,9 +55,3 @@ jobs:
     - name: pytest
       run: |
         nox --non-interactive --session tests
-
-    - name: Coveralls
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: coverage.lcov
