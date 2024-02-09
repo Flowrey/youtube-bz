@@ -2,7 +2,7 @@ import json
 import re
 import urllib.parse
 import urllib.request
-from typing import Any
+from typing import Any, Dict
 
 from .exceptions import FailedToParseIntialData
 
@@ -25,7 +25,7 @@ class Client:
         return html
 
 
-def get_initial_data(search_results: str) -> dict[str, Any]:
+def get_initial_data(search_results: str) -> Dict[str, Any]:
     """Get YouTube initial data."""
     initial_data_regex = re.compile(r"(var\ ytInitialData\ =\ )(.*);</script><script")
     match = initial_data_regex.search(search_results)

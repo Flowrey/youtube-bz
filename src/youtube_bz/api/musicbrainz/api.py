@@ -1,7 +1,7 @@
 import json
 import urllib.parse
 import urllib.request
-from typing import Any, List, Optional, TypedDict, cast
+from typing import Any, Dict, List, Optional, TypedDict, cast
 
 
 class ArtistCredit(TypedDict):
@@ -48,13 +48,13 @@ class Client:
         """Create a new MusicBrainz client."""
         self._base = base
 
-    def _lookup(self, entity_type: str, mbid: str) -> dict[str, Any]:
+    def _lookup(self, entity_type: str, mbid: str) -> Dict[str, Any]:
         url = f"{self._base}/ws/2/{entity_type}/{mbid}?"
         url += urllib.parse.urlencode({"inc": "artists+recordings", "fmt": "json"})
         with urllib.request.urlopen(url) as response:
             return json.load(response)
 
-    def _search(self, entity_type: str, query: str) -> dict[str, Any]:
+    def _search(self, entity_type: str, query: str) -> Dict[str, Any]:
         url = f"{self._base}/ws/2/{entity_type}?"
         url += urllib.parse.urlencode({"query": query, "fmt": "json"})
         with urllib.request.urlopen(url) as response:
