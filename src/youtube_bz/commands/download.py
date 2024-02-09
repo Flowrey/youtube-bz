@@ -1,6 +1,6 @@
 import concurrent.futures
 from dataclasses import dataclass
-from typing import Any, Generator, Optional
+from typing import Any, Dict, Generator, Optional
 from urllib.error import URLError
 
 import pytube
@@ -39,7 +39,7 @@ def get_best_match(
     return None
 
 
-def get_contents(yt_initial_data: dict[str, Any]):
+def get_contents(yt_initial_data: Dict[str, Any]):
     contents = (
         itemSectionRenderer["videoRenderer"]
         for itemSectionRenderer in yt_initial_data["contents"][

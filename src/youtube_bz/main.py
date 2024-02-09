@@ -2,6 +2,7 @@ import argparse
 import importlib.metadata
 import logging
 import sys
+from typing import List
 
 from youtube_bz import commands
 from youtube_bz.exceptions import YouTubeBrainzError
@@ -83,7 +84,7 @@ def setup(args: argparse.Namespace) -> None:
     setup_logging("verbose" in args and args.verbose)
 
 
-def cli(args: list[str] = sys.argv[1:]):
+def cli(args: List[str] = sys.argv[1:]):
     try:
         parser = get_command_parser()
         parsed_args = parser.parse_args(args)
